@@ -1,5 +1,0 @@
-package homework
-
-fun main() {
-
-}
