@@ -30,7 +30,7 @@ class MoveElementOption : Option {
         try {
             performedCommandStorage.makeAction(MoveElement(startPosition, endPosition))
         }
-        catch (exception : IndexOutOfBoundsException) {
+        catch (indexException: IndexOutOfBoundsException) {
             println("Your position(s) are incorrect")
         }
     }
@@ -38,7 +38,7 @@ class MoveElementOption : Option {
 
 class OutputListOption : Option {
     override fun performOption(scan: java.util.Scanner, performedCommandStorage: PerformedCommandStorage) {
-        val elements : MutableList<Int> = performedCommandStorage.getElements()
+        val elements: MutableList<Int> = performedCommandStorage.getElements()
         if (elements.size != 0) {
             for (element in elements) print("$element ")
             print("\n")
@@ -48,7 +48,7 @@ class OutputListOption : Option {
     }
 }
 
-fun getListOfOptions() : MutableList<Option> {
+fun getListOfOptions(): MutableList<Option> {
     val optionList = mutableListOf<Option>()
     optionList.add(InsertToStartOption())
     optionList.add(InsertToEndOption())
@@ -60,16 +60,17 @@ fun getListOfOptions() : MutableList<Option> {
 fun showUserInterface() {
     val scan = java.util.Scanner(System.`in`)
     val performedCommandStorage = PerformedCommandStorage()
-    val optionList : MutableList<Option> = getListOfOptions()
+    val optionList: MutableList<Option> = getListOfOptions()
     println("Have a look at the commands I can perform...")
     println("Press 0 exit\nPress 1 to insert the element to the start\n" +
             "Press 2 to insert the element to the end\nPress 3 to move the element\n" +
             "Press 4 to see the list of elements\nPress 5 to cancel last action\n")
     var chosenOption = -1
+    val cancelActionNumber = 5
     while (chosenOption != 0) {
         print("Type option here: ")
         chosenOption = scan.nextInt()
-        if (chosenOption == 5) {
+        if (chosenOption == cancelActionNumber) {
             if (performedCommandStorage.getActions().size != 0) {
                 performedCommandStorage.cancelLastAction()
             } else {
@@ -79,7 +80,7 @@ fun showUserInterface() {
         }
         try {
             optionList[chosenOption - 1].performOption(scan, performedCommandStorage)
-        } catch (exception : IndexOutOfBoundsException) {
+        } catch (indexException: IndexOutOfBoundsException) {
             println("Your option number is incorrect")
         }
     }

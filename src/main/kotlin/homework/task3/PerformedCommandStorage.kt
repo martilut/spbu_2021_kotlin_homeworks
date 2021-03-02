@@ -10,7 +10,7 @@ class PerformedCommandStorage {
         performedActions.add(action)
     }
     fun cancelLastAction() {
-        val action : Action = performedActions.last()
+        val action: Action = performedActions.last()
         action.cancelAction(elements)
         performedActions.removeLast()
     }
@@ -40,7 +40,7 @@ class InsertToEnd(private val value: Int) : Action {
 }
 
 class MoveElement(private val start: Int, private val end: Int) : Action {
-    private fun moveElement(elements: MutableList<Int>, startIndex: Int, endIndex: Int) {
+    private fun moveElementAction(elements: MutableList<Int>, startIndex: Int, endIndex: Int) {
         if (endIndex > startIndex) {
             elements.add(endIndex + 1, elements[startIndex])
             elements.removeAt(startIndex)
@@ -51,10 +51,10 @@ class MoveElement(private val start: Int, private val end: Int) : Action {
     }
 
     override fun makeAction(elements: MutableList<Int>) {
-        moveElement(elements, start - 1, end - 1)
+        moveElementAction(elements, start - 1, end - 1)
     }
 
     override fun cancelAction(elements: MutableList<Int>) {
-        moveElement(elements, end - 1, start - 1)
+        moveElementAction(elements, end - 1, start - 1)
     }
 }
