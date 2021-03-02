@@ -30,7 +30,7 @@ class MoveElementOption : Option {
         try {
             performedCommandStorage.makeAction(MoveElement(startPosition, endPosition))
         }
-        catch (IndexOutOfBoundsException: IndexOutOfBoundsException) {
+        catch (e: IndexOutOfBoundsException) {
             println("Your position(s) are incorrect")
         }
     }
@@ -82,7 +82,7 @@ fun showUserInterface() {
         chosenOption = scan.nextInt()
         try {
             optionList[chosenOption - 1].performOption(scan, performedCommandStorage)
-        } catch (IndexOutOfBoundsException: IndexOutOfBoundsException) {
+        } catch (e: IndexOutOfBoundsException) {
             println("Your option number is incorrect")
         }
     }
