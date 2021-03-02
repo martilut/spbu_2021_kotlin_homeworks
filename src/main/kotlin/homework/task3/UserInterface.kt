@@ -80,7 +80,7 @@ fun showUserInterface() {
     while (chosenOption != 0) {
         print("Type option here: ")
         chosenOption = scan.nextInt()
-        if (chosenOption in 1..5) {
+        if (chosenOption in 1..optionList.size) {
             optionList[chosenOption - 1].performOption(scan, performedCommandStorage)
         } else {
             throw IndexOutOfBoundsException("Your option number is incorrect")
