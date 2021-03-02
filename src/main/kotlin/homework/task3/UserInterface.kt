@@ -27,11 +27,11 @@ class MoveElementOption : Option {
         print("Enter the start and the end position: ")
         val startPosition = scan.nextInt()
         val endPosition = scan.nextInt()
-        try {
+        val listSize = performedCommandStorage.getElements().size
+        if (startPosition in 1..listSize && endPosition in 1..listSize) {
             performedCommandStorage.makeAction(MoveElement(startPosition, endPosition))
-        }
-        catch (e: IndexOutOfBoundsException) {
-            println("Your position(s) are incorrect")
+        } else {
+            throw IndexOutOfBoundsException("Your position(s) are incorrect")
         }
     }
 }
@@ -80,10 +80,10 @@ fun showUserInterface() {
     while (chosenOption != 0) {
         print("Type option here: ")
         chosenOption = scan.nextInt()
-        try {
+        if (chosenOption in 1..5) {
             optionList[chosenOption - 1].performOption(scan, performedCommandStorage)
-        } catch (e: IndexOutOfBoundsException) {
-            println("Your option number is incorrect")
+        } else {
+            throw IndexOutOfBoundsException("Your option number is incorrect")
         }
     }
     println("You exit the app")
