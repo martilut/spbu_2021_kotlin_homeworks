@@ -1,24 +1,22 @@
 package homework
 
-fun iterativeFactorial(n: Int): Int {
+fun getIterativeFactorial(n: Int): Int {
     var answer = 1
-    var count = 0
-    repeat(n) {
-        answer *= (++count)
+    for (i in 1..n) {
+        answer *= i
     }
     return answer
 }
 
-fun recursiveFactorial(n: Int): Int {
+fun getRecursiveFactorial(n: Int): Int {
     if (n == 0) {
         return 1
     }
-    return n * recursiveFactorial(n - 1)
+    return n * getRecursiveFactorial(n - 1)
 }
 
-val scan = java.util.Scanner(System.`in`)
-
 fun getInput(): Int {
+    val scan = java.util.Scanner(System.`in`)
     var n = scan.nextInt()
     while (n < 0) {
         print("Your number must be positive: ")
@@ -30,6 +28,6 @@ fun getInput(): Int {
 fun main() {
     print("Enter your number: ")
     val n = getInput()
-    println("Iterative factorial is ${iterativeFactorial(n)}")
-    println("Recursive factorial is ${recursiveFactorial(n)}")
+    println("Iterative factorial is ${getIterativeFactorial(n)}")
+    println("Recursive factorial is ${getRecursiveFactorial(n)}")
 }
