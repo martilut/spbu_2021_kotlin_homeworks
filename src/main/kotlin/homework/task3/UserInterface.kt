@@ -30,7 +30,7 @@ class MoveElementOption : Option {
         try {
             performedCommandStorage.makeAction(MoveElement(startPosition, endPosition))
         }
-        catch (indexException: IndexOutOfBoundsException) {
+        catch (IndexOutOfBoundsException: IndexOutOfBoundsException) {
             println("Your position(s) are incorrect")
         }
     }
@@ -48,12 +48,23 @@ class OutputListOption : Option {
     }
 }
 
+class CancelLastAction : Option {
+    override fun performOption(scan: java.util.Scanner, performedCommandStorage: PerformedCommandStorage) {
+        if (performedCommandStorage.getActions().size != 0) {
+            performedCommandStorage.cancelLastAction()
+        } else {
+            println("No actions had been performed yet")
+        }
+    }
+}
+
 fun getListOfOptions(): MutableList<Option> {
     val optionList = mutableListOf<Option>()
     optionList.add(InsertToStartOption())
     optionList.add(InsertToEndOption())
     optionList.add(MoveElementOption())
     optionList.add(OutputListOption())
+    optionList.add(CancelLastAction())
     return optionList
 }
 
@@ -66,21 +77,12 @@ fun showUserInterface() {
             "Press 2 to insert the element to the end\nPress 3 to move the element\n" +
             "Press 4 to see the list of elements\nPress 5 to cancel last action\n")
     var chosenOption = -1
-    val cancelActionNumber = 5
     while (chosenOption != 0) {
         print("Type option here: ")
         chosenOption = scan.nextInt()
-        if (chosenOption == cancelActionNumber) {
-            if (performedCommandStorage.getActions().size != 0) {
-                performedCommandStorage.cancelLastAction()
-            } else {
-                println("No actions had been performed yet")
-            }
-            continue
-        }
         try {
             optionList[chosenOption - 1].performOption(scan, performedCommandStorage)
-        } catch (indexException: IndexOutOfBoundsException) {
+        } catch (IndexOutOfBoundsException: IndexOutOfBoundsException) {
             println("Your option number is incorrect")
         }
     }
