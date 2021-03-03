@@ -1,23 +1,29 @@
 package homework
 
-fun countSubstrings(mainString: String, subString: String): Int {
-    var answer = 0
+fun countSubstrings(mainString: String, subString: String) : Int {
     val mainStringSize = mainString.length
     val subStringSize = subString.length
-    for (i in 0 until (mainStringSize - subStringSize + 1)) {
-        if (mainString.substring(i, i + subStringSize) == subString) {
-            ++answer
-        }
+    if (mainStringSize == 0 || subStringSize == 0 || subStringSize > mainStringSize) {
+        return -1
     }
-    return answer
+    return mainString.windowed(subStringSize){
+        if (it == subString)
+            1
+        else
+            0
+    }.sum()
 }
 
-val scan = java.util.Scanner(System.`in`)
-
 fun main() {
-    print("Enter the first string: ")
-    val mainString = scan.next()
-    print("Enter the second string: ")
-    val subString = scan.next()
-    println("The second string occurs in the first string ${countSubstrings(mainString, subString)} times")
+    val scan = java.util.Scanner(System.`in`)
+    print("Enter the main string: ")
+    val mainString = scan.nextLine()
+    print("Enter the string to find: ")
+    val subString = scan.nextLine()
+    val answer = countSubstrings(mainString, subString)
+    if (answer == -1) {
+        println("Your input is incorrect")
+    } else {
+        println("The string $subString occurs in the string $mainString $answer times")
+    }
 }
