@@ -1,16 +1,13 @@
 package homework
 
-fun countSubstrings(mainString: String, subString: String) : Int {
+fun countSubstrings(mainString: String, subString: String): Int {
     val mainStringSize = mainString.length
     val subStringSize = subString.length
     if (mainStringSize == 0 || subStringSize == 0 || subStringSize > mainStringSize) {
         return -1
     }
-    return mainString.windowed(subStringSize){
-        if (it == subString)
-            1
-        else
-            0
+    return mainString.windowed(subStringSize) {
+        if (it == subString) 1 else 0
     }.sum()
 }
 
