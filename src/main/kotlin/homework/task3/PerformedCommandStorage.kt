@@ -1,7 +1,5 @@
 package homework.task3
 
-import java.lang.IndexOutOfBoundsException
-
 class PerformedCommandStorage {
     private val elements = mutableListOf<Int>()
     private val performedActions = mutableListOf<Action>()
@@ -47,7 +45,8 @@ fun areCorrect(startIndex: Int, endIndex: Int, listSize: Int): Boolean {
 
 class MoveElement(private val start: Int, private val end: Int) : Action {
     private fun moveElementAction(elements: MutableList<Int>, startIndex: Int, endIndex: Int) {
-        if (!areCorrect(startIndex, endIndex, elements.size)) throw IllegalArgumentException("Your position(s) are incorrect")
+        if (!areCorrect(startIndex, endIndex, elements.size))
+            throw IllegalArgumentException("Your position(s) are incorrect")
         if (endIndex > startIndex) {
             elements.add(endIndex + 1, elements[startIndex])
             elements.removeAt(startIndex)

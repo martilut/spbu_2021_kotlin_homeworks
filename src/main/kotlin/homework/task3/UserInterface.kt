@@ -1,7 +1,5 @@
 package homework.task3
 
-import java.lang.IndexOutOfBoundsException
-
 interface Option {
     fun performOption(scan: java.util.Scanner, performedCommandStorage: PerformedCommandStorage)
 }
