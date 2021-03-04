@@ -27,11 +27,10 @@ class MoveElementOption : Option {
         print("Enter the start and the end position: ")
         val startPosition = scan.nextInt()
         val endPosition = scan.nextInt()
-        val listSize = performedCommandStorage.getElements().size
-        if (startPosition in 1..listSize && endPosition in 1..listSize) {
+        try {
             performedCommandStorage.makeAction(MoveElement(startPosition, endPosition))
-        } else {
-            throw IndexOutOfBoundsException("Your position(s) are incorrect")
+        } catch (e: IndexOutOfBoundsException) {
+            println("Your position(s) are incorrect")
         }
     }
 }
@@ -74,16 +73,19 @@ fun showUserInterface() {
     val optionList: MutableList<Option> = getListOfOptions()
     println("Have a look at the commands I can perform...")
     println("Press 0 exit\nPress 1 to insert the element to the start\n" +
-            "Press 2 to insert the element to the end\nPress 3 to move the element\n" +
+            "Press 2 to insert the element to the end\nPress 3 to move the element (first position is 0)\n" +
             "Press 4 to see the list of elements\nPress 5 to cancel last action\n")
     var chosenOption = -1
     while (chosenOption != 0) {
         print("Type option here: ")
         chosenOption = scan.nextInt()
+        if (chosenOption == 0) {
+            break
+        }
         if (chosenOption in 1..optionList.size) {
             optionList[chosenOption - 1].performOption(scan, performedCommandStorage)
         } else {
-            throw IndexOutOfBoundsException("Your option number is incorrect")
+            println("Your option number is incorrect")
         }
     }
     println("You exit the app")

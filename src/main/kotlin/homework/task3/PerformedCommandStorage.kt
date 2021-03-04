@@ -1,5 +1,7 @@
 package homework.task3
 
+import java.lang.IndexOutOfBoundsException
+
 class PerformedCommandStorage {
     private val elements = mutableListOf<Int>()
     private val performedActions = mutableListOf<Action>()
@@ -39,8 +41,13 @@ class InsertToEnd(private val value: Int) : Action {
     }
 }
 
+fun areCorrect(startIndex: Int, endIndex: Int, listSize: Int): Boolean {
+    return startIndex in 0 until listSize && endIndex in 0 until listSize
+}
+
 class MoveElement(private val start: Int, private val end: Int) : Action {
     private fun moveElementAction(elements: MutableList<Int>, startIndex: Int, endIndex: Int) {
+        if (!areCorrect(startIndex, endIndex, elements.size)) throw IndexOutOfBoundsException()
         if (endIndex > startIndex) {
             elements.add(endIndex + 1, elements[startIndex])
             elements.removeAt(startIndex)
@@ -51,10 +58,10 @@ class MoveElement(private val start: Int, private val end: Int) : Action {
     }
 
     override fun makeAction(elements: MutableList<Int>) {
-        moveElementAction(elements, start - 1, end - 1)
+        moveElementAction(elements, start, end)
     }
 
     override fun cancelAction(elements: MutableList<Int>) {
-        moveElementAction(elements, end - 1, start - 1)
+        moveElementAction(elements, end, start)
     }
 }
