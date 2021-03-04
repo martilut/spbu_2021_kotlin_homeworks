@@ -29,8 +29,8 @@ class MoveElementOption : Option {
         val endPosition = scan.nextInt()
         try {
             performedCommandStorage.makeAction(MoveElement(startPosition, endPosition))
-        } catch (e: IndexOutOfBoundsException) {
-            println("Your position(s) are incorrect")
+        } catch (e: IllegalArgumentException) {
+            println("${e.message}")
         }
     }
 }
