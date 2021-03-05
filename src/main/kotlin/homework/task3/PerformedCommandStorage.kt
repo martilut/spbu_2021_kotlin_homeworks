@@ -1,11 +1,11 @@
 package homework.task3
 
 class PerformedCommandStorage {
-    val elements : MutableList<Int>
+    val elements: MutableList<Int>
         get() {
             return _elements
         }
-    val performedActions : MutableList<Action>
+    val performedActions: MutableList<Action>
         get() {
             return _performedActions
         }
@@ -45,7 +45,7 @@ class InsertToEnd(private val value: Int) : Action {
     }
 }
 
-fun areCorrect(startIndex: Int, endIndex: Int, range : IntRange): Boolean {
+fun areCorrect(startIndex: Int, endIndex: Int, range: IntRange): Boolean {
     return startIndex in range && endIndex in range
 }
 
