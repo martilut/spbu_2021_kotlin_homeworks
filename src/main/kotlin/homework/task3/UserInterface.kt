@@ -1,30 +1,29 @@
 package homework.task3
 
+import library.scanNumber
+
 interface Option {
     fun performOption(scan: java.util.Scanner, performedCommandStorage: PerformedCommandStorage)
 }
 
 class InsertToStartOption : Option {
     override fun performOption(scan: java.util.Scanner, performedCommandStorage: PerformedCommandStorage) {
-        print("Enter your value: ")
-        val userValue = scan.nextInt()
+        val userValue = scanNumber(scan, "Enter your value: ")
         performedCommandStorage.makeAction(InsertToStart(userValue))
     }
 }
 
 class InsertToEndOption : Option {
     override fun performOption(scan: java.util.Scanner, performedCommandStorage: PerformedCommandStorage) {
-        print("Enter your value: ")
-        val userValue = scan.nextInt()
+        val userValue = scanNumber(scan, "Enter your value: ")
         performedCommandStorage.makeAction(InsertToEnd(userValue))
     }
 }
 
 class MoveElementOption : Option {
     override fun performOption(scan: java.util.Scanner, performedCommandStorage: PerformedCommandStorage) {
-        print("Enter the start and the end position: ")
-        val startPosition = scan.nextInt()
-        val endPosition = scan.nextInt()
+        val startPosition = scanNumber(scan, "Enter the start position: ")
+        val endPosition = scanNumber(scan, "Enter the final position: ")
         try {
             performedCommandStorage.makeAction(MoveElement(startPosition, endPosition))
         } catch (e: IllegalArgumentException) {
@@ -35,7 +34,7 @@ class MoveElementOption : Option {
 
 class OutputListOption : Option {
     override fun performOption(scan: java.util.Scanner, performedCommandStorage: PerformedCommandStorage) {
-        val elements: MutableList<Int> = performedCommandStorage.getElements()
+        val elements: MutableList<Int> = performedCommandStorage.elements
         if (elements.size != 0) {
             for (element in elements) print("$element ")
             print("\n")
@@ -47,7 +46,7 @@ class OutputListOption : Option {
 
 class CancelLastAction : Option {
     override fun performOption(scan: java.util.Scanner, performedCommandStorage: PerformedCommandStorage) {
-        if (performedCommandStorage.getActions().size != 0) {
+        if (performedCommandStorage.performedActions.size != 0) {
             performedCommandStorage.cancelLastAction()
         } else {
             println("No actions had been performed yet")
