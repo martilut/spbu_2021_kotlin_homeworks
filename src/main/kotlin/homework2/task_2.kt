@@ -1,10 +1,10 @@
 package homework2
 
-fun removeDuplicateElements(elements : MutableList<Int>) : Set<Int> {
+fun removeDuplicateElements(elements: MutableList<Int>): Set<Int> {
     return elements.reversed().toSet()
 }
 
-fun inputElements() : MutableList<Int> {
+fun inputElements(): MutableList<Int> {
     val scan = java.util.Scanner(System.`in`)
     val elements = mutableListOf<Int>()
     print("Enter the amount of elements: ")
