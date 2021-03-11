@@ -2,10 +2,16 @@ package homework.task3
 
 import library.scanNumber
 
+/**
+ * Basic interface for options
+ */
 interface Option {
     fun performOption(scan: java.util.Scanner, performedCommandStorage: PerformedCommandStorage)
 }
 
+/**
+ * Option: select action InsertToStart
+ */
 class InsertToStartOption : Option {
     override fun performOption(scan: java.util.Scanner, performedCommandStorage: PerformedCommandStorage) {
         val userValue = scanNumber(scan, "Enter your value: ")
@@ -13,6 +19,9 @@ class InsertToStartOption : Option {
     }
 }
 
+/**
+ * Option: select action InsertToEnd
+ */
 class InsertToEndOption : Option {
     override fun performOption(scan: java.util.Scanner, performedCommandStorage: PerformedCommandStorage) {
         val userValue = scanNumber(scan, "Enter your value: ")
@@ -20,6 +29,9 @@ class InsertToEndOption : Option {
     }
 }
 
+/**
+ * Option: select action MoveElement
+ */
 class MoveElementOption : Option {
     override fun performOption(scan: java.util.Scanner, performedCommandStorage: PerformedCommandStorage) {
         val startPosition = scanNumber(scan, "Enter the start position: ")
@@ -32,6 +44,9 @@ class MoveElementOption : Option {
     }
 }
 
+/**
+ * Option: output list of elements
+ */
 class OutputListOption : Option {
     override fun performOption(scan: java.util.Scanner, performedCommandStorage: PerformedCommandStorage) {
         val elements: MutableList<Int> = performedCommandStorage.elements
@@ -44,6 +59,9 @@ class OutputListOption : Option {
     }
 }
 
+/**
+ * Option: cancel last performed action
+ */
 class CancelLastAction : Option {
     override fun performOption(scan: java.util.Scanner, performedCommandStorage: PerformedCommandStorage) {
         if (performedCommandStorage.performedActions.size != 0) {
@@ -54,6 +72,10 @@ class CancelLastAction : Option {
     }
 }
 
+/**
+ * Adds options to the list
+ * @return list of options
+ */
 fun getListOfOptions(): MutableList<Option> {
     val optionList = mutableListOf<Option>()
     optionList.add(InsertToStartOption())
@@ -64,6 +86,9 @@ fun getListOfOptions(): MutableList<Option> {
     return optionList
 }
 
+/**
+ * Program initialization
+ */
 fun showUserInterface() {
     val scan = java.util.Scanner(System.`in`)
     val performedCommandStorage = PerformedCommandStorage()

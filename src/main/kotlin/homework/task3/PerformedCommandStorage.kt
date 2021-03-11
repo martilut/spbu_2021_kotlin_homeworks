@@ -1,5 +1,10 @@
 package homework.task3
 
+/**
+ * Main class for operations with actions
+ * @property elements contains the current list of elements
+ * @property performedActions contains the list of actions performed to the elements
+ */
 class PerformedCommandStorage {
     val elements: MutableList<Int>
         get() {
@@ -22,11 +27,17 @@ class PerformedCommandStorage {
     }
 }
 
+/**
+ * Basic interface for actions
+ */
 interface Action {
     fun makeAction(elements: MutableList<Int>)
     fun cancelAction(elements: MutableList<Int>)
 }
 
+/**
+ * Action: insert element to the start of the list
+ */
 class InsertToStart(private val value: Int) : Action {
     override fun makeAction(elements: MutableList<Int>) {
         elements.add(0, value)
@@ -36,6 +47,9 @@ class InsertToStart(private val value: Int) : Action {
     }
 }
 
+/**
+ * Action: insert element to the end of the list
+ */
 class InsertToEnd(private val value: Int) : Action {
     override fun makeAction(elements: MutableList<Int>) {
         elements.add(value)
@@ -49,6 +63,9 @@ fun areCorrect(startIndex: Int, endIndex: Int, range: IntRange): Boolean {
     return startIndex in range && endIndex in range
 }
 
+/**
+ * Action: change position of given element in the list
+ */
 class MoveElement(private val start: Int, private val end: Int) : Action {
     private fun moveElementAction(elements: MutableList<Int>, startIndex: Int, endIndex: Int) {
         if (!areCorrect(startIndex, endIndex, elements.indices)) {
