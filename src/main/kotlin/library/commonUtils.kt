@@ -1,6 +1,6 @@
 package library
 
-fun scanNumber(scan: java.util.Scanner, message: String): Int {
+fun scanNumber(message: String): Int {
     print(message)
-    return scan.nextInt()
+    return java.util.Scanner(System.`in`).nextInt()
 }

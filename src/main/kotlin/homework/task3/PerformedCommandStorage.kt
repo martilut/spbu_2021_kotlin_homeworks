@@ -1,5 +1,8 @@
 package homework.task3
 
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+
 class PerformedCommandStorage {
     val elements: MutableList<Int>
         get() {
@@ -27,6 +30,8 @@ interface Action {
     fun cancelAction(elements: MutableList<Int>)
 }
 
+@Serializable
+@SerialName("InsertToStart")
 class InsertToStart(private val value: Int) : Action {
     override fun makeAction(elements: MutableList<Int>) {
         elements.add(0, value)
@@ -36,6 +41,8 @@ class InsertToStart(private val value: Int) : Action {
     }
 }
 
+@Serializable
+@SerialName("InsertToEnd")
 class InsertToEnd(private val value: Int) : Action {
     override fun makeAction(elements: MutableList<Int>) {
         elements.add(value)
@@ -49,6 +56,8 @@ fun areCorrect(startIndex: Int, endIndex: Int, range: IntRange): Boolean {
     return startIndex in range && endIndex in range
 }
 
+@Serializable
+@SerialName("MoveElement")
 class MoveElement(private val start: Int, private val end: Int) : Action {
     private fun moveElementAction(elements: MutableList<Int>, startIndex: Int, endIndex: Int) {
         if (!areCorrect(startIndex, endIndex, elements.indices)) {
