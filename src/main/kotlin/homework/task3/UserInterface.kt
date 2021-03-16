@@ -106,7 +106,6 @@ class JsonOperations(private val jsonFile: File) : Option {
     }
 }
 
-
 fun getListOfOptions(jsonFile: File): MutableList<Option> {
     val optionList = mutableListOf<Option>()
     optionList.add(InsertToStartOption())
