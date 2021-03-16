@@ -8,7 +8,6 @@ import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
 import library.scanNumber
 import java.io.File
-import java.lang.Exception
 
 const val FILEPATH = "src/main/kotlin/homework/task3/"
 const val FILENAME = "inputFile.json"
@@ -83,7 +82,7 @@ class JsonOperations(private val jsonFile: File) : Option {
 
     private fun loadFromJson(performedCommandStorage: PerformedCommandStorage) {
         val jsonText = jsonFile.readText()
-        val actionList : MutableList<Action> = format.decodeFromString(jsonText)
+        val actionList: MutableList<Action> = format.decodeFromString(jsonText)
         makeAllActions(actionList, performedCommandStorage.elements)
     }
 
@@ -95,11 +94,7 @@ class JsonOperations(private val jsonFile: File) : Option {
     override fun performOption(performedCommandStorage: PerformedCommandStorage) {
         when (scanNumber("Type 1 to load from Json\nType 2 to save to Json\nEnter here: ")) {
             1 -> {
-                try {
-                    loadFromJson(performedCommandStorage)
-                } catch (e: Exception) {
-                    println("JSON file is empty")
-                }
+                loadFromJson(performedCommandStorage)
             }
             2 -> {
                 saveToJson(performedCommandStorage)
@@ -125,7 +120,7 @@ fun getListOfOptions(jsonFile: File): MutableList<Option> {
 
 fun showUserInterface() {
     val jsonFile = File(FILEPATH + FILENAME)
-    if (!jsonFile.createNewFile()) jsonFile.writeText("")
+    if (!jsonFile.createNewFile()) jsonFile.writeText("[]")
 
     val scan = java.util.Scanner(System.`in`)
     val performedCommandStorage = PerformedCommandStorage()
