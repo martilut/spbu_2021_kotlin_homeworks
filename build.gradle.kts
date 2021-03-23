@@ -1,11 +1,13 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.dokka.gradle.DokkaTask
+import java.net.URL
 
 plugins {
     kotlin("jvm") version "1.4.30"
+    id("org.jetbrains.dokka") version "1.4.20"
     kotlin("plugin.serialization") version "1.4.30"
     id("io.gitlab.arturbosch.detekt") version "1.15.0"
     application
-
 }
 
 group = "me.user"
@@ -37,6 +39,19 @@ tasks.withType<KotlinCompile>() {
     kotlinOptions {
         jvmTarget = "1.8"
         freeCompilerArgs = listOf("-Werror")
+    }
+}
+
+tasks.withType<DokkaTask>().configureEach {
+    dokkaSourceSets {
+        named("main") {
+            moduleName.set("Kotlin Projects")
+            sourceLink {
+                localDirectory.set(file("src/main/kotlin"))
+                remoteUrl.set(URL("https://github.com/martilut/KotlinProjects/tree/master/src/main/kotlin"))
+                remoteLineSuffix.set("#L")
+            }
+        }
     }
 }
 

@@ -9,10 +9,16 @@ import kotlinx.serialization.modules.subclass
 import util.scanNumber
 import java.io.File
 
+/**
+ * Basic interface for options
+ */
 interface Option {
     fun performOption(performedCommandStorage: PerformedCommandStorage)
 }
 
+/**
+ * Option: select action InsertToStart
+ */
 class InsertToStartOption : Option {
     override fun performOption(performedCommandStorage: PerformedCommandStorage) {
         val userValue = scanNumber("Enter your value: ")
@@ -20,6 +26,9 @@ class InsertToStartOption : Option {
     }
 }
 
+/**
+ * Option: select action InsertToEnd
+ */
 class InsertToEndOption : Option {
     override fun performOption(performedCommandStorage: PerformedCommandStorage) {
         val userValue = scanNumber("Enter your value: ")
@@ -27,6 +36,9 @@ class InsertToEndOption : Option {
     }
 }
 
+/**
+ * Option: select action MoveElement
+ */
 class MoveElementOption : Option {
     override fun performOption(performedCommandStorage: PerformedCommandStorage) {
         val startPosition = scanNumber("Enter the start position: ")
@@ -39,6 +51,9 @@ class MoveElementOption : Option {
     }
 }
 
+/**
+ * Option: output list of elements
+ */
 class OutputListOption : Option {
     override fun performOption(performedCommandStorage: PerformedCommandStorage) {
         val elements: MutableList<Int> = performedCommandStorage.elements
@@ -51,6 +66,9 @@ class OutputListOption : Option {
     }
 }
 
+/**
+ * Option: cancel last performed action
+ */
 class CancelLastAction : Option {
     override fun performOption(performedCommandStorage: PerformedCommandStorage) {
         if (performedCommandStorage.performedActions.size != 0) {
@@ -61,12 +79,9 @@ class CancelLastAction : Option {
     }
 }
 
-fun makeAllActions(actionList: MutableList<Action>, elements: MutableList<Int>) {
-    for (action in actionList) {
-        action.makeAction(elements)
-    }
-}
-
+/**
+ * Option: save from json or load to json
+ */
 class JsonOperations(private val jsonFile: File) : Option {
     private val module = SerializersModule {
         polymorphic(Action::class) {
@@ -77,6 +92,11 @@ class JsonOperations(private val jsonFile: File) : Option {
     }
     private val format = Json { serializersModule = module }
 
+    private fun makeAllActions(actionList: MutableList<Action>, elements: MutableList<Int>) {
+        for (action in actionList) {
+            action.makeAction(elements)
+        }
+    }
     private fun loadFromJson(performedCommandStorage: PerformedCommandStorage) {
         val jsonText = jsonFile.readText()
         val actionList: MutableList<Action> = format.decodeFromString(jsonText)
@@ -103,6 +123,10 @@ class JsonOperations(private val jsonFile: File) : Option {
     }
 }
 
+/**
+ * Adds options to the list
+ * @return list of options
+ */
 fun getListOfOptions(jsonFile: File): MutableList<Option> {
     return mutableListOf(
         InsertToStartOption(),
@@ -114,10 +138,12 @@ fun getListOfOptions(jsonFile: File): MutableList<Option> {
     )
 }
 
-fun showUserInterface(fileName : String) {
+/**
+ * Program initialization
+ */
+fun showUserInterface(fileName: String) {
     val jsonFile = File(fileName)
     if (!jsonFile.createNewFile()) jsonFile.writeText("[]")
-
     val scan = java.util.Scanner(System.`in`)
     val performedCommandStorage = PerformedCommandStorage()
     val optionList: MutableList<Option> = getListOfOptions(jsonFile)
