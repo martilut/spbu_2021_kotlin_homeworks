@@ -141,7 +141,7 @@ fun getListOfOptions(jsonFile: File): MutableList<Option> {
 /**
  * Program initialization
  */
-fun showUserInterface(fileName : String) {
+fun showUserInterface(fileName: String) {
     val jsonFile = File(fileName)
     if (!jsonFile.createNewFile()) jsonFile.writeText("[]")
     val scan = java.util.Scanner(System.`in`)
