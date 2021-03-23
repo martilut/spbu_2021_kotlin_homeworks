@@ -3,6 +3,11 @@ package homework.task3
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName
 
+/**
+ * Main class for operations with actions
+ * @property elements contains the current list of elements
+ * @property performedActions contains the list of actions performed to the elements
+ */
 class PerformedCommandStorage {
     val elements: MutableList<Int> = mutableListOf<Int>()
     val performedActions: MutableList<Action> = mutableListOf<Action>()
@@ -18,11 +23,17 @@ class PerformedCommandStorage {
     }
 }
 
+/**
+ * Basic interface for actions
+ */
 interface Action {
     fun makeAction(elements: MutableList<Int>)
     fun cancelAction(elements: MutableList<Int>)
 }
 
+/**
+ * Action: insert element to the start of the list
+ */
 @Serializable
 @SerialName("InsertToStart")
 class InsertToStart(private val value: Int) : Action {
@@ -34,6 +45,9 @@ class InsertToStart(private val value: Int) : Action {
     }
 }
 
+/**
+ * Action: insert element to the end of the list
+ */
 @Serializable
 @SerialName("InsertToEnd")
 class InsertToEnd(private val value: Int) : Action {
@@ -45,6 +59,9 @@ class InsertToEnd(private val value: Int) : Action {
     }
 }
 
+/**
+ * Action: change position of given element in the list
+ */
 @Serializable
 @SerialName("MoveElement")
 class MoveElement(private val start: Int, private val end: Int) : Action {
