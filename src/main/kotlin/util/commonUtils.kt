@@ -1,4 +1,4 @@
-package library
+package util
 
 fun scanNumber(message: String): Int {
     print(message)

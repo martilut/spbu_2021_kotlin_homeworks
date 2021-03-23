@@ -1,5 +1,5 @@
 package homework.task3
 
 fun main() {
-    showUserInterface()
+    showUserInterface("src/main/resources/inputFile.json")
 }

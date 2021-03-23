@@ -6,11 +6,8 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
-import library.scanNumber
+import util.scanNumber
 import java.io.File
-
-const val FILEPATH = "src/main/kotlin/homework/task3/"
-const val FILENAME = "inputFile.json"
 
 interface Option {
     fun performOption(performedCommandStorage: PerformedCommandStorage)
@@ -107,18 +104,18 @@ class JsonOperations(private val jsonFile: File) : Option {
 }
 
 fun getListOfOptions(jsonFile: File): MutableList<Option> {
-    val optionList = mutableListOf<Option>()
-    optionList.add(InsertToStartOption())
-    optionList.add(InsertToEndOption())
-    optionList.add(MoveElementOption())
-    optionList.add(OutputListOption())
-    optionList.add(CancelLastAction())
-    optionList.add(JsonOperations(jsonFile))
-    return optionList
+    return mutableListOf(
+        InsertToStartOption(),
+        InsertToEndOption(),
+        MoveElementOption(),
+        OutputListOption(),
+        CancelLastAction(),
+        JsonOperations(jsonFile)
+    )
 }
 
-fun showUserInterface() {
-    val jsonFile = File(FILEPATH + FILENAME)
+fun showUserInterface(fileName : String) {
+    val jsonFile = File(fileName)
     if (!jsonFile.createNewFile()) jsonFile.writeText("[]")
 
     val scan = java.util.Scanner(System.`in`)

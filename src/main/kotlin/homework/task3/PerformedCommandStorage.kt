@@ -4,24 +4,17 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName
 
 class PerformedCommandStorage {
-    val elements: MutableList<Int>
-        get() {
-            return _elements
-        }
-    val performedActions: MutableList<Action>
-        get() {
-            return _performedActions
-        }
-    private val _elements = mutableListOf<Int>()
-    private val _performedActions = mutableListOf<Action>()
+    val elements: MutableList<Int> = mutableListOf<Int>()
+    val performedActions: MutableList<Action> = mutableListOf<Action>()
+
     fun makeAction(action: Action) {
-        action.makeAction(_elements)
-        _performedActions.add(action)
+        action.makeAction(elements)
+        performedActions.add(action)
     }
     fun cancelLastAction() {
-        val action: Action = _performedActions.last()
-        action.cancelAction(_elements)
-        _performedActions.removeLast()
+        val action: Action = performedActions.last()
+        action.cancelAction(elements)
+        performedActions.removeLast()
     }
 }
 
@@ -52,13 +45,12 @@ class InsertToEnd(private val value: Int) : Action {
     }
 }
 
-fun areCorrect(startIndex: Int, endIndex: Int, range: IntRange): Boolean {
-    return startIndex in range && endIndex in range
-}
-
 @Serializable
 @SerialName("MoveElement")
 class MoveElement(private val start: Int, private val end: Int) : Action {
+    private fun areCorrect(startIndex: Int, endIndex: Int, range: IntRange): Boolean {
+        return startIndex in range && endIndex in range
+    }
     private fun moveElementAction(elements: MutableList<Int>, startIndex: Int, endIndex: Int) {
         if (!areCorrect(startIndex, endIndex, elements.indices)) {
             throw IllegalArgumentException("Your position(s) are incorrect")
