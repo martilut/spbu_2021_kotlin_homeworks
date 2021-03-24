@@ -4,9 +4,10 @@ import java.net.URL
 
 plugins {
     kotlin("jvm") version "1.4.30"
+    id("org.jetbrains.dokka") version "1.4.20"
+    kotlin("plugin.serialization") version "1.4.30"
     id("io.gitlab.arturbosch.detekt") version "1.15.0"
     application
-    id("org.jetbrains.dokka") version "1.4.20"
 }
 
 group = "me.user"
@@ -18,6 +19,7 @@ repositories {
 }
 
 dependencies {
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.1.0")
     testImplementation(kotlin("test-junit"))
 
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.14.2")
