@@ -2,7 +2,7 @@ package test1.priorityqueue
 
 import java.util.PriorityQueue
 
-data class QueueElement(val value: Any, val priority: Int)
+class QueueElement internal constructor(val value: Any, val priority: Int)
 
 class QueueElementComparator {
     companion object : Comparator<QueueElement> {
