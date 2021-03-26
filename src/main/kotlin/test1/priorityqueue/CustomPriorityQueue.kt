@@ -2,19 +2,14 @@ package test1.priorityqueue
 
 import java.util.PriorityQueue
 
-class QueueElement internal constructor(val value: Any, val priority: Int)
-
-private class QueueElementComparator {
-    companion object : Comparator<QueueElement> {
-
-        override fun compare(a: QueueElement, b: QueueElement): Int {
-            return b.priority.compareTo(a.priority)
-        }
+data class QueueElement(val value: Any, val priority: Int) : Comparable<QueueElement> {
+    override fun compareTo(other: QueueElement): Int {
+        return other.priority.compareTo(priority)
     }
 }
 
 class CustomPriorityQueue {
-    private val priorityQueue = PriorityQueue<QueueElement>(QueueElementComparator)
+    private val priorityQueue = PriorityQueue<QueueElement>()
     private var isEmpty: Boolean = true
     fun enqueue(element: Any, priority: Int) {
         priorityQueue.add(QueueElement(element, priority))
