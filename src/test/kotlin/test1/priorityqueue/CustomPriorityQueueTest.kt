@@ -1,4 +1,4 @@
-package test1.task_1
+package test1.priorityqueue
 
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -17,7 +17,7 @@ internal class CustomPriorityQueueTest {
     fun peek() {
         val priorityQueue = CustomPriorityQueue()
         priorityQueue.enqueue(100, 1)
-        assertEquals(false, priorityQueue.isEmpty)
+        assertEquals(100, priorityQueue.peek()?.value)
     }
 
     @Test

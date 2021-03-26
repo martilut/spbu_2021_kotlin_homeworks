@@ -1,4 +1,4 @@
-package test1.task_1
+package test1.priorityqueue
 
 import java.util.PriorityQueue
 
@@ -15,7 +15,7 @@ class QueueElementComparator {
 
 class CustomPriorityQueue {
     private val priorityQueue = PriorityQueue<QueueElement>(QueueElementComparator)
-    var isEmpty : Boolean = true
+    private var isEmpty: Boolean = true
     fun enqueue(element: Any, priority: Int) {
         priorityQueue.add(QueueElement(element, priority))
         isEmpty = false

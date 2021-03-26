@@ -1,9 +1,9 @@
-package test1.task_1
+package test1.priorityqueue
 
 fun main() {
     val priorityQueue = CustomPriorityQueue()
     try {
-        priorityQueue.enqueue(12, 1)
+        priorityQueue.enqueue("000", 1)
         priorityQueue.enqueue("helloWorld", 2)
         priorityQueue.enqueue("234", 0)
         priorityQueue.remove()
