@@ -4,7 +4,7 @@ import java.util.PriorityQueue
 
 class QueueElement internal constructor(val value: Any, val priority: Int)
 
-class QueueElementComparator {
+private class QueueElementComparator {
     companion object : Comparator<QueueElement> {
 
         override fun compare(a: QueueElement, b: QueueElement): Int {
