@@ -1,0 +1,6 @@
+packageName: homework3
+className: JustSomeClass
+functions:
+  - name: "firstFunctionTest"
+  - name: "secondFunctionTest"
+  - name: "thirdFunctionTest"
