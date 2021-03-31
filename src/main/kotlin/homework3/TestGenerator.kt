@@ -1,6 +1,11 @@
 package homework3
 
-import com.squareup.kotlinpoet.*
+import com.squareup.kotlinpoet.ClassName
+import com.squareup.kotlinpoet.FunSpec
+import com.squareup.kotlinpoet.KModifier
+import com.squareup.kotlinpoet.TypeSpec
+import com.squareup.kotlinpoet.FileSpec
+
 
 class TestGenerator(private val testClass: TestClass) {
 
@@ -17,11 +22,6 @@ class TestGenerator(private val testClass: TestClass) {
 
     fun generateFile() =
         FileSpec.builder(testClass.packageName, testClass.className + "Test")
-            .addType(generateClass(testClass.className, testClass.functions))
-            .build()
-
-    val file: FileSpec
-        get() = FileSpec.builder(testClass.packageName, "${testClass.className}Test")
             .addType(generateClass(testClass.className, testClass.functions))
             .build()
 }
