@@ -6,7 +6,6 @@ import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.FileSpec
 
-
 class TestGenerator(private val testClass: TestClass) {
 
     private fun generateFunction(function: TestFunction) =
@@ -17,7 +16,7 @@ class TestGenerator(private val testClass: TestClass) {
     private fun generateClass(className: String, functions: List<TestFunction>) =
         TypeSpec.classBuilder(className)
             .addModifiers(KModifier.INTERNAL)
-            .addFunctions(functions.map { generateFunction(it) } )
+            .addFunctions(functions.map {generateFunction(it)})
             .build()
 
     fun generateFile() =
