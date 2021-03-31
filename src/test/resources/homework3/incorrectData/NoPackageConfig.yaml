@@ -1,0 +1,4 @@
+class name: PerformedCommandStorage
+functions:
+  - name: "forwardApply"
+  - name: "backwardApply"

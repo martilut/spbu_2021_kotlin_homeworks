@@ -1,5 +1,5 @@
-packageName: homework3
-className: JustAnotherClass
+package name: homework3
+class name: JustAnotherClass
 functions:
   - name: "fourthFunctionTest"
   - name: "fifthFunctionTest"

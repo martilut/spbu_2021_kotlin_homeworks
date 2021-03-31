@@ -1,0 +1,4 @@
+package name: homework1
+functions:
+  - name: "forwardApply"
+  - name: "backwardApply"
