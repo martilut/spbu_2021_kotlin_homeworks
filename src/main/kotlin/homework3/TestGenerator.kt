@@ -16,7 +16,7 @@ class TestGenerator(private val testClass: TestClass) {
     private fun generateClass(className: String, functions: List<TestFunction>) =
         TypeSpec.classBuilder(className)
             .addModifiers(KModifier.INTERNAL)
-            .addFunctions(functions.map {generateFunction(it)})
+            .addFunctions(functions.map { generateFunction(it) })
             .build()
 
     fun generateFile() =
