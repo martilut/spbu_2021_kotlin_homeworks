@@ -97,13 +97,13 @@ class JsonOperations(private val jsonFile: File) : Option {
             action.makeAction(elements)
         }
     }
-    private fun loadFromJson(performedCommandStorage: PerformedCommandStorage) {
+    fun loadFromJson(performedCommandStorage: PerformedCommandStorage) {
         val jsonText = jsonFile.readText()
         val actionList: MutableList<Action> = format.decodeFromString(jsonText)
         makeAllActions(actionList, performedCommandStorage.elements)
     }
 
-    private fun saveToJson(performedCommandStorage: PerformedCommandStorage) {
+    fun saveToJson(performedCommandStorage: PerformedCommandStorage) {
         val jsonText = format.encodeToString(performedCommandStorage.performedActions)
         jsonFile.writeText(jsonText)
     }
