@@ -21,7 +21,7 @@ internal class TestGeneratorTest {
             Arguments.of(
                 "correctData/JustAnotherClassTest.kt",
                 "correctData/JustAnotherClassYaml.yaml"
-            )
+                )
         )
         @JvmStatic
         fun incorrectData(): List<Arguments> = listOf(
