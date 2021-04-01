@@ -15,35 +15,38 @@ internal class TestGeneratorTest {
         @JvmStatic
         fun correctData(): List<Arguments> = listOf(
             Arguments.of(
-                File(TestClass::class.java.getResource("correctData/JustSomeClassTest.kt").path),
-                File(TestClass::class.java.getResource("correctData/JustSomeClassYaml.yaml").path)
+                "correctData/JustSomeClassTest.kt",
+                "correctData/JustSomeClassYaml.yaml"
                 ),
             Arguments.of(
-                File(TestClass::class.java.getResource("correctData/JustAnotherClassTest.kt").path),
-                File(TestClass::class.java.getResource("correctData/JustAnotherClassYaml.yaml").path)
+                "correctData/JustAnotherClassTest.kt",
+                "correctData/JustAnotherClassYaml.yaml"
             )
         )
         @JvmStatic
         fun incorrectData(): List<Arguments> = listOf(
-            Arguments.of(File(TestClass::class.java.getResource("incorrectData/NoClassNameConfig.yaml").path)),
-            Arguments.of(File(TestClass::class.java.getResource("incorrectData/NoFunctionsConfig.yaml").path)),
-            Arguments.of(File(TestClass::class.java.getResource("incorrectData/NoPackageConfig.yaml").path))
+            Arguments.of("incorrectData/NoClassNameConfig.yaml"),
+            Arguments.of("incorrectData/NoFunctionsConfig.yaml"),
+            Arguments.of("incorrectData/NoPackageConfig.yaml")
         )
     }
 
     @MethodSource("correctData")
     @ParameterizedTest(name = "test{index}, {1}")
-    fun generateCorrectTestFile(expected: File, input: File) {
-        val yamlInfo = Yaml.default.decodeFromString(TestClass.serializer(), input.readText())
+    fun generateCorrectTestFile(expectedPath: String, inputPath: String) {
+        val expectedFile = File(TestClass::class.java.getResource(expectedPath).path)
+        val inputFile = File(TestClass::class.java.getResource(inputPath).path)
+        val yamlInfo = Yaml.default.decodeFromString(TestClass.serializer(), inputFile.readText())
         val testFile = TestGenerator(yamlInfo).generateFile()
-        assertEquals(expected.readText().replace("\r\n", "\n"), testFile.toString())
+        assertEquals(expectedFile.readText().replace("\r\n", "\n"), testFile.toString())
     }
 
     @MethodSource("incorrectData")
     @ParameterizedTest(name = "test{index}, {1}")
-    fun generateIncorrectTestFile(input: File) {
+    fun generateIncorrectTestFile(path: String) {
         assertThrows(MissingRequiredPropertyException::class.java) {
-            val yamlInfo = Yaml.default.decodeFromString(TestClass.serializer(), input.readText())
+            val inputFile = File(TestClass::class.java.getResource(path).path)
+            val yamlInfo = Yaml.default.decodeFromString(TestClass.serializer(), inputFile.readText())
             TestGenerator(yamlInfo).generateFile()
         }
     }
