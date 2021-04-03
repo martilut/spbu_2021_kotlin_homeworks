@@ -62,8 +62,8 @@ class AVLTreeNode<K : Comparable<K>, V>(private val nodeKey: K, private var node
     fun containsValueRecursive(valueToFind: V): Boolean {
         return when {
             this.value != valueToFind -> {
-                val containsLeft : Boolean = this.leftChild?.containsValueRecursive(valueToFind) ?: false
-                val containsRight : Boolean = this.rightChild?.containsValueRecursive(valueToFind) ?: false
+                val containsLeft: Boolean = this.leftChild?.containsValueRecursive(valueToFind) ?: false
+                val containsRight: Boolean = this.rightChild?.containsValueRecursive(valueToFind) ?: false
                 containsLeft || containsRight
             }
             else -> true
