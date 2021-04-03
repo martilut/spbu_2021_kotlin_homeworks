@@ -2,7 +2,7 @@ package homework4
 
 import kotlin.math.max
 
-class AVLTreeNode<K: Comparable<K>, V>(private val nodeKey: K, private var nodeValue: V) : Map.Entry<K, V> {
+class AVLTreeNode<K : Comparable<K>, V>(private val nodeKey: K, private var nodeValue: V) : Map.Entry<K, V> {
 
     override val key: K
         get() = nodeKey
@@ -62,8 +62,9 @@ class AVLTreeNode<K: Comparable<K>, V>(private val nodeKey: K, private var nodeV
     fun containsValueRecursive(valueToFind: V): Boolean {
         return when {
             this.value != valueToFind -> {
-                this.leftChild?.containsValueRecursive(valueToFind) ?: false
-                        || this.rightChild?.containsValueRecursive(valueToFind) ?: false
+                val containsLeft : Boolean = this.leftChild?.containsValueRecursive(valueToFind) ?: false
+                val containsRight : Boolean = this.rightChild?.containsValueRecursive(valueToFind) ?: false
+                containsLeft || containsRight
             }
             else -> true
         }

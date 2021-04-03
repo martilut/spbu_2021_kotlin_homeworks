@@ -1,6 +1,6 @@
 package homework4
 
-class AVLTree<K: Comparable<K>, V> : Map<K, V> {
+class AVLTree<K : Comparable<K>, V> : Map<K, V> {
     private var root: AVLTreeNode<K, V>? = null
     private var _size = 0
     override val entries: Set<Map.Entry<K, V>>
