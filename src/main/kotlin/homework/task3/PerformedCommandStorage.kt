@@ -8,16 +8,16 @@ import kotlinx.serialization.SerialName
  * @property elements contains the current list of elements
  * @property performedActions contains the list of actions performed to the elements
  */
-class PerformedCommandStorage {
-    val elements: MutableList<Int> = mutableListOf<Int>()
-    val performedActions: MutableList<Action> = mutableListOf<Action>()
+class PerformedCommandStorage<T> {
+    val elements = mutableListOf<T>()
+    val performedActions = mutableListOf<Action<T>>()
 
-    fun makeAction(action: Action) {
+    fun makeAction(action: Action<T>) {
         action.makeAction(elements)
         performedActions.add(action)
     }
     fun cancelLastAction() {
-        val action: Action = performedActions.last()
+        val action: Action<T> = performedActions.last()
         action.cancelAction(elements)
         performedActions.removeLast()
     }
@@ -26,9 +26,9 @@ class PerformedCommandStorage {
 /**
  * Basic interface for actions
  */
-interface Action {
-    fun makeAction(elements: MutableList<Int>)
-    fun cancelAction(elements: MutableList<Int>)
+interface Action<T> {
+    fun makeAction(elements: MutableList<T>)
+    fun cancelAction(elements: MutableList<T>)
 }
 
 /**
@@ -36,11 +36,11 @@ interface Action {
  */
 @Serializable
 @SerialName("InsertToStart")
-class InsertToStart(private val value: Int) : Action {
-    override fun makeAction(elements: MutableList<Int>) {
+class InsertToStart<T>(private val value: T) : Action<T> {
+    override fun makeAction(elements: MutableList<T>) {
         elements.add(0, value)
     }
-    override fun cancelAction(elements: MutableList<Int>) {
+    override fun cancelAction(elements: MutableList<T>) {
         elements.removeFirst()
     }
 }
@@ -50,11 +50,11 @@ class InsertToStart(private val value: Int) : Action {
  */
 @Serializable
 @SerialName("InsertToEnd")
-class InsertToEnd(private val value: Int) : Action {
-    override fun makeAction(elements: MutableList<Int>) {
+class InsertToEnd<T>(private val value: T) : Action<T> {
+    override fun makeAction(elements: MutableList<T>) {
         elements.add(value)
     }
-    override fun cancelAction(elements: MutableList<Int>) {
+    override fun cancelAction(elements: MutableList<T>) {
         elements.removeLast()
     }
 }
@@ -64,11 +64,11 @@ class InsertToEnd(private val value: Int) : Action {
  */
 @Serializable
 @SerialName("MoveElement")
-class MoveElement(private val start: Int, private val end: Int) : Action {
+class MoveElement<T>(private val start: Int, private val end: Int) : Action<T> {
     private fun areCorrect(startIndex: Int, endIndex: Int, range: IntRange): Boolean {
         return startIndex in range && endIndex in range
     }
-    private fun moveElementAction(elements: MutableList<Int>, startIndex: Int, endIndex: Int) {
+    private fun moveElementAction(elements: MutableList<T>, startIndex: Int, endIndex: Int) {
         if (!areCorrect(startIndex, endIndex, elements.indices)) {
             throw IllegalArgumentException("Your position(s) are incorrect")
         }
@@ -81,11 +81,11 @@ class MoveElement(private val start: Int, private val end: Int) : Action {
         }
     }
 
-    override fun makeAction(elements: MutableList<Int>) {
+    override fun makeAction(elements: MutableList<T>) {
         moveElementAction(elements, start, end)
     }
 
-    override fun cancelAction(elements: MutableList<Int>) {
+    override fun cancelAction(elements: MutableList<T>) {
         moveElementAction(elements, end, start)
     }
 }
