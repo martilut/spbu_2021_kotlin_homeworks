@@ -72,11 +72,6 @@ class AVLTreeNode<K : Comparable<K>, V>(private val nodeKey: K, private var node
 
     fun addNodeRecursive(keyToAdd: K, valueToAdd: V): AVLTreeNode<K, V>? {
         return when {
-            keyToAdd == this.nodeKey -> {
-                val previous = this
-                this.nodeValue = valueToAdd
-                previous
-            }
             keyToAdd < this.nodeKey -> {
                 if (this.leftChild == null) {
                     this.leftChild = AVLTreeNode(keyToAdd, valueToAdd)
@@ -93,7 +88,10 @@ class AVLTreeNode<K : Comparable<K>, V>(private val nodeKey: K, private var node
                     this.rightChild?.addNodeRecursive(keyToAdd, valueToAdd)
                 }
             }
-            else -> null
+            else -> {
+                this.nodeValue = valueToAdd
+                this
+            }
         }
     }
 
@@ -123,7 +121,7 @@ class AVLTreeNode<K : Comparable<K>, V>(private val nodeKey: K, private var node
                 when (this.rightChild) {
                     null -> this.leftChild
                     else -> {
-                        val minNode = getMinNode()
+                        val minNode = this.rightChild!!.getMinNode()
                         minNode.rightChild = removeMinNode(this.rightChild!!)
                         minNode.leftChild = this.leftChild
                         minNode.balance()

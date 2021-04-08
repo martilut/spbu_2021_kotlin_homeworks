@@ -7,14 +7,14 @@ class AVLTree<K : Comparable<K>, V> : Map<K, V> {
         get() {
             val entries = mutableSetOf<AVLTreeNode<K, V>>()
             root?.getEntries(entries) ?: emptySet<AVLTreeNode<K, V>>()
-            return entries.toSet()
+            return entries
         }
     override val keys: Set<K>
         get() = entries.map { it.key }.toSet()
     override val size: Int
         get() = _size
     override val values: Collection<V>
-        get() = entries.map { it.value }.toSet()
+        get() = entries.map { it.value }
 
     override fun get(key: K): V? = this.root?.getRecursive(key)?.value
 
