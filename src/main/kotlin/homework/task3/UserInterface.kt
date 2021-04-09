@@ -97,17 +97,17 @@ class JsonOperations(private val jsonFile: File) : Option<Int> {
     }
 }
 
-enum class UserOption(val value: Int) {
-    INSERT_TO_START(1), INSERT_TO_END(2),
-    MOVE_ELEMENT(3), OUTPUT_LIST(4),
-    CANCEL_LAST_ACTION(5), OPERATE_WITH_JSON(6)
+enum class UserOption(val value: Char) {
+    INSERT_TO_START('1'), INSERT_TO_END('2'),
+    MOVE_ELEMENT('3'), OUTPUT_LIST('4'),
+    CANCEL_LAST_ACTION('5'), OPERATE_WITH_JSON('6')
 }
 
 /**
  * Adds options to the list
  * @return list of options
  */
-fun getOption(userOption: Int, jsonFile: File): Option<Int>? {
+fun getOption(userOption: Char, jsonFile: File): Option<Int>? {
     return when (userOption) {
         UserOption.INSERT_TO_START.value -> InsertToStartOption(scanNumber("Enter your value: "))
         UserOption.INSERT_TO_END.value -> InsertToEndOption(scanNumber("Enter your value: "))
@@ -132,11 +132,11 @@ fun showUserInterface(fileName: String) {
             "Press 2 to insert the element to the end\nPress 3 to move the element (first position is 0)\n" +
             "Press 4 to see the list of elements\nPress 5 to cancel last action\n" +
             "Press 6 to operate with JSON file\n")
-    var chosenOption = -1
-    while (chosenOption != 0) {
+    var chosenOption = ' '
+    while (chosenOption != '0') {
         print("Type option here: ")
-        chosenOption = scan.nextInt()
-        if (chosenOption == 0) {
+        chosenOption = scan.next().single()
+        if (chosenOption == '0') {
             break
         }
         val option = getOption(chosenOption, jsonFile)
