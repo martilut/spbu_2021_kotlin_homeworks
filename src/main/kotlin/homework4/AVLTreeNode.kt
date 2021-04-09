@@ -97,13 +97,11 @@ class AVLTreeNode<K : Comparable<K>, V>(private val nodeKey: K, private var node
 
     private fun getMinNode(): AVLTreeNode<K, V> = this.leftChild?.getMinNode() ?: this
 
-    private fun removeMinNode(minNode: AVLTreeNode<K, V>): AVLTreeNode<K, V>? {
-        return when (minNode.leftChild) {
-            null -> minNode.rightChild
-            else -> {
-                minNode.leftChild = removeMinNode(minNode.leftChild!!)
-                minNode.balance()
-            }
+    private fun removeMinNode(minNode: AVLTreeNode<K, V>, newNode: AVLTreeNode<K, V>?) {
+        if (this.leftChild?.nodeKey == minNode.nodeKey) {
+            this.leftChild = newNode
+        } else {
+            this.leftChild?.removeMinNode(minNode, newNode)
         }
     }
 
@@ -118,12 +116,16 @@ class AVLTreeNode<K : Comparable<K>, V>(private val nodeKey: K, private var node
                 this
             }
             else -> {
-                when (this.rightChild) {
-                    null -> this.leftChild
+                when {
+                    this.rightChild == null -> this.leftChild
+                    this.leftChild == null -> this.rightChild
                     else -> {
-                        val minNode = this.rightChild!!.getMinNode()
-                        minNode.rightChild = removeMinNode(this.rightChild!!)
+                        val minNode = this.rightChild?.getMinNode() ?: this
                         minNode.leftChild = this.leftChild
+                        if (minNode.nodeKey != this.rightChild?.nodeKey) {
+                            this.rightChild?.removeMinNode(minNode, minNode.rightChild)
+                            minNode.rightChild = this.rightChild
+                        }
                         minNode.balance()
                     }
                 }

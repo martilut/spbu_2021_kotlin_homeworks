@@ -46,7 +46,10 @@ class AVLTree<K : Comparable<K>, V> : Map<K, V> {
     }
 
     fun remove(key: K) {
+        if (this[key] != null) {
+            --this._size
+        }
         root = root?.removeNodeRecursive(key)
-        root?.balance()
+        this.root?.balance()
     }
 }
