@@ -97,18 +97,24 @@ class JsonOperations(private val jsonFile: File) : Option<Int> {
     }
 }
 
+enum class UserOption(val value: Int) {
+    INSERT_TO_START(1), INSERT_TO_END(2),
+    MOVE_ELEMENT(3), OUTPUT_LIST(4),
+    CANCEL_LAST_ACTION(5), OPERATE_WITH_JSON(6)
+}
+
 /**
  * Adds options to the list
  * @return list of options
  */
 fun getOption(userOption: Int, jsonFile: File): Option<Int>? {
     return when (userOption) {
-        1 -> InsertToStartOption(scanNumber("Enter your value: "))
-        2 -> InsertToEndOption(scanNumber("Enter your value: "))
-        3 -> MoveElementOption()
-        4 -> OutputListOption()
-        5 -> CancelLastAction()
-        6 -> JsonOperations(jsonFile)
+        UserOption.INSERT_TO_START.value -> InsertToStartOption(scanNumber("Enter your value: "))
+        UserOption.INSERT_TO_END.value -> InsertToEndOption(scanNumber("Enter your value: "))
+        UserOption.MOVE_ELEMENT.value -> MoveElementOption()
+        UserOption.OUTPUT_LIST.value -> OutputListOption()
+        UserOption.CANCEL_LAST_ACTION.value -> CancelLastAction()
+        UserOption.OPERATE_WITH_JSON.value -> JsonOperations(jsonFile)
         else -> null
     }
 }
