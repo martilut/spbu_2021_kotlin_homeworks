@@ -1,27 +1,7 @@
-package homework.task3
+package homework.task3.actions
 
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName
-
-/**
- * Main class for operations with actions
- * @property elements contains the current list of elements
- * @property performedActions contains the list of actions performed to the elements
- */
-class PerformedCommandStorage<T> {
-    val elements = mutableListOf<T>()
-    val performedActions = mutableListOf<Action<T>>()
-
-    fun makeAction(action: Action<T>) {
-        action.makeAction(elements)
-        performedActions.add(action)
-    }
-    fun cancelLastAction() {
-        val action: Action<T> = performedActions.last()
-        action.cancelAction(elements)
-        performedActions.removeLast()
-    }
-}
+import kotlinx.serialization.Serializable
 
 /**
  * Basic interface for actions

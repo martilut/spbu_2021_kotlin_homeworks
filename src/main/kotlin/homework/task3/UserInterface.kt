@@ -1,13 +1,14 @@
 package homework.task3
 
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.modules.SerializersModule
-import kotlinx.serialization.modules.polymorphic
-import kotlinx.serialization.modules.subclass
+import homework.task3.actions.InsertToStart
+import homework.task3.actions.InsertToEnd
+import homework.task3.actions.MoveElement
+import homework.task3.storage.PerformedCommandStorage
+import homework.task3.storage.PerformedCommandStorage.IntSerialize.loadFromJson
+import homework.task3.storage.PerformedCommandStorage.IntSerialize.saveToJson
 import util.scanNumber
 import java.io.File
+import java.util.Scanner
 
 /**
  * Basic interface for options
@@ -30,7 +31,6 @@ class InsertToStartOption<T>(private val userValue: T) : Option<T> {
  */
 class InsertToEndOption<T>(private val userValue: T) : Option<T> {
     override fun performOption(performedCommandStorage: PerformedCommandStorage<T>) {
-        //val userValue = scanNumber("Enter your value: ")
         performedCommandStorage.makeAction(InsertToEnd(userValue))
     }
 }
@@ -81,39 +81,14 @@ class CancelLastAction<T> : Option<T> {
 /**
  * Option: save from json or load to json
  */
-class JsonOperations<T>(private val jsonFile: File) : Option<T> {
-    private val module = SerializersModule {
-        polymorphic(Action::class) {
-            subclass(InsertToStart::class)
-            subclass(InsertToEnd::class)
-            subclass(MoveElement::class)
-        }
-    }
-    private val format = Json { serializersModule = module }
-
-    private fun makeAllActions(actionList: MutableList<Action<T>>, elements: MutableList<T>) {
-        for (action in actionList) {
-            action.makeAction(elements)
-        }
-    }
-    fun loadFromJson(performedCommandStorage: PerformedCommandStorage<T>) {
-        val jsonText = jsonFile.readText()
-        val actionList: MutableList<Action<T>> = format.decodeFromString(jsonText)
-        makeAllActions(actionList, performedCommandStorage.elements)
-    }
-
-    fun saveToJson(performedCommandStorage: PerformedCommandStorage<T>) {
-        val jsonText = format.encodeToString(performedCommandStorage.performedActions)
-        jsonFile.writeText(jsonText)
-    }
-
-    override fun performOption(performedCommandStorage: PerformedCommandStorage<T>) {
+class JsonOperations(private val jsonFile: File) : Option<Int> {
+    override fun performOption(performedCommandStorage: PerformedCommandStorage<Int>) {
         when (scanNumber("Type 1 to load from Json\nType 2 to save to Json\nEnter here: ")) {
             1 -> {
-                loadFromJson(performedCommandStorage)
+                performedCommandStorage.loadFromJson(jsonFile)
             }
             2 -> {
-                saveToJson(performedCommandStorage)
+                performedCommandStorage.saveToJson(jsonFile)
             }
             else -> {
                 print("Your input is incorrect\n")
@@ -144,7 +119,7 @@ fun getOption(userOption: Int, jsonFile: File): Option<Int>? {
 fun showUserInterface(fileName: String) {
     val jsonFile = File(fileName)
     if (!jsonFile.createNewFile()) jsonFile.writeText("[]")
-    val scan = java.util.Scanner(System.`in`)
+    val scan = Scanner(System.`in`)
     val performedCommandStorage = PerformedCommandStorage<Int>()
     println("Have a look at the commands I can perform...")
     println("Press 0 exit\nPress 1 to insert the element to the start\n" +
