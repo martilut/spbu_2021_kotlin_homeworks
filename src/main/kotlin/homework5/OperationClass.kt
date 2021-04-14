@@ -1,16 +1,16 @@
 package homework5
 
-enum class Operation(val value: String) {
+enum class ArithmeticOperation(val value: String) {
     PLUS("+"), MINUS("-"),
     MULTIPLY("*"), DIVIDE("/")
 }
 
-fun operationContains(lexeme: String): Operation? {
-    var foundOperation: Operation? = null
-    for (operation in enumValues<Operation>()) {
+fun operationContains(lexeme: String): ArithmeticOperation? {
+    var foundArithmeticOperation: ArithmeticOperation? = null
+    for (operation in enumValues<ArithmeticOperation>()) {
         if (operation.value == lexeme) {
-            foundOperation = operation
+            foundArithmeticOperation = operation
         }
     }
-    return foundOperation
+    return foundArithmeticOperation
 }

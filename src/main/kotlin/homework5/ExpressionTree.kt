@@ -2,16 +2,16 @@ package homework5
 
 class ExpressionTreeNode(private var value: Int = 0) {
     private var isCounted: Boolean = false
-    private var operator: Operation? = null
+    private var operator: ArithmeticOperation? = null
     private var leftChild: ExpressionTreeNode? = null
     private var rightChild: ExpressionTreeNode? = null
 
     private fun performOperation(leftValue: Int, rightValue: Int): Int {
-        return when(operator) {
-            Operation.PLUS -> leftValue + rightValue
-            Operation.MINUS -> leftValue - rightValue
-            Operation.MULTIPLY -> leftValue * rightValue
-            Operation.DIVIDE -> {
+        return when (operator) {
+            ArithmeticOperation.PLUS -> leftValue + rightValue
+            ArithmeticOperation.MINUS -> leftValue - rightValue
+            ArithmeticOperation.MULTIPLY -> leftValue * rightValue
+            ArithmeticOperation.DIVIDE -> {
                 if (rightValue == 0) {
                     throw IllegalArgumentException("Division by zero")
                 } else {
@@ -56,10 +56,9 @@ class ExpressionTreeNode(private var value: Int = 0) {
     }
 
     private fun isReadyToUpdate(list: MutableList<ExpressionTreeNode>): Boolean {
+        val numberCount = 2
         val size = list.size
-        return size > 2 && list[size - 1].isCounted
-                && list[size - 2].isCounted
-                && !(list[size - 3].isCounted)
+        return size > numberCount && list[size - 1].isCounted && list[size - 2].isCounted && !(list[size - 3].isCounted)
     }
 
     fun getParseTreeRoot(expression: List<String>): ExpressionTreeNode {

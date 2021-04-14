@@ -7,7 +7,7 @@ fun userInput() {
         val tree = ExpressionTree()
         val expression = scanLine("Enter your expression: ")
         tree.buildParseTree(parseExpression(expression))
-        tree.outputTree().forEach { print(it)}
+        tree.outputTree().forEach { print(it) }
         print("Result: ${tree.getResult()}")
     } catch (e: IllegalArgumentException) {
         print("${e.message}")
