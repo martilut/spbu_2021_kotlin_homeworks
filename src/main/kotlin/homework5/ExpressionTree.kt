@@ -56,9 +56,8 @@ class ExpressionTreeNode(private var value: Int = 0) {
     }
 
     private fun isReadyToUpdate(list: MutableList<ExpressionTreeNode>): Boolean {
-        val numberCount = 2
         val size = list.size
-        return size > numberCount && list[size - 1].isCounted && list[size - 2].isCounted && !(list[size - 3].isCounted)
+        return size > 2 && list[size - 1].isCounted && list[size - 2].isCounted
     }
 
     fun getParseTreeRoot(expression: List<String>): ExpressionTreeNode {
