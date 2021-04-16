@@ -15,7 +15,7 @@ class OperatorNode(
     private val operator: String?,
     private var leftChild: ParserTreeNode,
     private var rightChild: ParserTreeNode
-    ) : ParserTreeNode {
+) : ParserTreeNode {
     override fun calculate(): Int {
         return when (operator) {
             OperationType.PLUS.value -> leftChild.calculate() + rightChild.calculate()
