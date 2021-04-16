@@ -3,17 +3,17 @@ package homework5
 interface ParserTreeNode {
     val isEmpty: Boolean
     val isCounted: Boolean
-    fun calculate() : Int
-    fun getOperator() : String?
-    fun outputValue(height: Int) : String
+    fun calculate(): Int
+    fun getOperator(): String?
+    fun outputValue(height: Int): String
 }
 
-class OperandNode(private val value: Int, private val _isEmpty: Boolean = false) : ParserTreeNode {
+class OperandNode(private val value: Int, private val isEmptyPrivate: Boolean = false) : ParserTreeNode {
     override val isEmpty: Boolean
-        get() = _isEmpty
+        get() = isEmptyPrivate
     override val isCounted: Boolean
         get() = true
-    override fun calculate() : Int = value
+    override fun calculate(): Int = value
     override fun getOperator(): String? = null
     override fun outputValue(height: Int): String =
         ".".repeat(height) + this.value.toString() + "\n"
