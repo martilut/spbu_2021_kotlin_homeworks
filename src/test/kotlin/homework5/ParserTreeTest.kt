@@ -1,13 +1,12 @@
 package homework5
 
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import java.io.File
 
-internal class ExpressionTreeTest {
+internal class ParserTreeTest {
 
     companion object {
         @JvmStatic
@@ -34,8 +33,7 @@ internal class ExpressionTreeTest {
     @MethodSource("expressionsToCalculate")
     @ParameterizedTest(name = "TestResults")
     fun getResult(expression: String, answer: Int) {
-        val tree = ExpressionTree()
-        tree.buildParseTree(parseExpression(expression))
+        val tree = ParserTree(parseExpression(expression))
         assertEquals(answer, tree.getResult())
     }
 
@@ -54,9 +52,7 @@ internal class ExpressionTreeTest {
         val expectedOutput = File(javaClass.getResource("testParser$fileNumber.txt").path)
             .readText()
             .replace("\r\n", "\n")
-        val tree = ExpressionTree()
-        tree.buildParseTree(parseExpression(expression))
-        val text = listToString(tree.outputTree())
-        assertEquals(expectedOutput, text)
+        val tree = ParserTree(parseExpression(expression))
+        assertEquals(expectedOutput, tree.getOutputTree())
     }
 }

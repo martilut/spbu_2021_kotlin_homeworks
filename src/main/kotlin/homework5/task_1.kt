@@ -4,10 +4,9 @@ import util.scanLine
 
 fun userInput() {
     try {
-        val tree = ExpressionTree()
         val expression = scanLine("Enter your expression: ")
-        tree.buildParseTree(parseExpression(expression))
-        tree.outputTree().forEach { print(it) }
+        val tree = ParserTree(parseExpression(expression))
+        print(tree.getOutputTree())
         print("Result: ${tree.getResult()}")
     } catch (e: IllegalArgumentException) {
         print("${e.message}")
