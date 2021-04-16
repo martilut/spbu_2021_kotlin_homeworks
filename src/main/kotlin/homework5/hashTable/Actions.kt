@@ -61,7 +61,7 @@ class OutputStatistics : Action {
                 "Element count: ${data[0]}\n" +
                 "Bucket count: ${data[1]}\n" +
                 "Conflicts count: ${data[2]}\n" +
-                "Maximal bucket size: ${data[3]}\n")
+                "Maximal bucket size: ${data[data.size - 1]}\n")
     }
 }
 

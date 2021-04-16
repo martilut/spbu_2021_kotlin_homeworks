@@ -1,6 +1,15 @@
 package homework5
 
-import homework5.hashTable.*
+import homework5.hashTable.HashTable
+import homework5.hashTable.DefaultHashFunction
+import homework5.hashTable.Action
+import homework5.hashTable.InsertElement
+import homework5.hashTable.RemoveElement
+import homework5.hashTable.FindElement
+import homework5.hashTable.SelectHashFunction
+import homework5.hashTable.FillFromFile
+import homework5.hashTable.OutputStatistics
+
 import util.scanNumber
 
 fun getActionList(): List<Action> {
@@ -30,7 +39,7 @@ fun showUserInterface(hashTable: HashTable<String, Double>) {
             println("You exit")
             break
         }
-        if (userInput in 1..6) {
+        if (userInput in 1..actionList.size) {
             actionList[userInput - 1].performAction(hashTable)
         } else {
             println("Input is incorrect")
