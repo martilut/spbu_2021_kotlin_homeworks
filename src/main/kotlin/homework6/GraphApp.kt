@@ -34,7 +34,8 @@ class Graph : View() {
                             null -> alert(Alert.AlertType.ERROR, "Incorrect number")
                             else -> {
                                 when {
-                                    count > 1000 -> alert(Alert.AlertType.WARNING, "Number must be less than 1000")
+                                    count > SortingStatistics.THOUSAND ->
+                                        alert(Alert.AlertType.WARNING, "Number must be less than 1000")
                                     count < 1 -> alert(Alert.AlertType.WARNING, "Number must be positive")
                                     else -> {
                                         inputThreadCount.threadCount = count
