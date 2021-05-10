@@ -1,29 +1,25 @@
 package homework6
 
 import kotlin.random.Random
-import kotlin.math.pow
 import kotlin.system.measureNanoTime
 
-object SortingStatistics {
-    const val TWO = 2.0
-    const val TWENTY = 20
-    const val THOUSAND = 1000
-    const val BILLION = 1000000000
-}
+class SortingStatistics {
 
-fun generateElements(count: Int): IntArray {
-    return IntArray(count) { Random.nextInt(0, count) }
-}
+    data class SortingData(val count: Int, val time: Double)
 
-fun getStatistics(threadCount: Int): MutableList<Pair<Int, Double>> {
-    val statistics = mutableListOf<Pair<Int, Double>>()
-    for (i in 0..SortingStatistics.TWENTY) {
-        val count = SortingStatistics.TWO.pow(i).toInt()
-        val elements = generateElements(count)
-        val time = measureNanoTime { elements.mergeSortMultithreading(threadCount) }
-        statistics.add(
-            Pair(count / SortingStatistics.THOUSAND, time.toDouble() / SortingStatistics.BILLION)
-        )
+    private fun generateElements(count: Int): IntArray {
+        return IntArray(count) { Random.nextInt(0, count) }
     }
-    return statistics
+
+    fun getStatistics(threadValue: Int, countValue: Int, stepValue: Int): MutableList<SortingData> {
+        val statistics = mutableListOf<SortingData>()
+        for (i in 0..countValue step stepValue) {
+            val elements = generateElements(i)
+            val time = measureNanoTime { MergeSorting().mergeSort(elements, threadValue) }
+            statistics.add(
+                SortingData(i, time.toDouble())
+            )
+        }
+        return statistics
+    }
 }
