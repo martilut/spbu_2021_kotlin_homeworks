@@ -32,8 +32,10 @@ class Graph : View() {
             null -> throw IllegalArgumentException("Incorrect input")
             else -> {
                 when {
-                    count > maxValue -> throw IllegalArgumentException("Maximal $dataName count is $maxValue")
-                    count < minValue -> throw IllegalArgumentException("Minimal $dataName count is $minValue")
+                    count > maxValue || count < minValue ->
+                        throw IllegalArgumentException(
+                            "Minimal $dataName count is $minValue\nMaximal $dataName count is $maxValue"
+                        )
                     else -> count
                 }
             }

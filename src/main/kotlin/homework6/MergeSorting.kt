@@ -141,23 +141,4 @@ class MergeSorting {
             }
         }
     }
-
-    /*fun IntArray.mergeSortMultithreading(threadCount: Int = 2, left: Int = 0, right: Int = this.size) {
-        val mid: Int = (left + right) / 2
-        if (threadCount == 1 || right - left < 1) {
-            this.mergeSort(left, right)
-        } else {
-            val leftThreads: Int = threadCount / 2
-            val rightThreads: Int = threadCount - leftThreads
-            val leftThread = Thread { this.mergeSortMultithreading(leftThreads, left, mid) }
-            val rightThread = Thread { this.mergeSortMultithreading(rightThreads, mid, right) }
-
-            leftThread.start()
-            rightThread.start()
-            leftThread.join()
-            rightThread.join()
-
-            this.mergeArrays(left, right, mid)
-        }
-    }*/
 }
