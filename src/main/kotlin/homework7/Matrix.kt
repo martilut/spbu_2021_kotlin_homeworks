@@ -1,3 +1,4 @@
+@file:Suppress("TooGenericExceptionCaught")
 package homework7
 
 import kotlinx.coroutines.launch
