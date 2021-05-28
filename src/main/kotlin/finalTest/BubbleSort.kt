@@ -2,6 +2,10 @@ package finalTest
 
 @Suppress("NestedBlockDepth")
 
+/**
+ * Function to sort a list of elements
+ * using custom comparator
+ */
 fun <T> MutableList<T>.bubbleSort(comparator: Comparator<T>): List<T> {
     try {
         var swap = true
