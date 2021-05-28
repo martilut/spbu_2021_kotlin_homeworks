@@ -1,7 +1,5 @@
 package homework6
 
-import kotlin.math.abs
-
 object MergeSorting {
 
     private fun IntArray.binarySearch(value: Int, left: Int, right: Int): Int {
