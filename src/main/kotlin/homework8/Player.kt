@@ -1,4 +1,4 @@
-package homework9
+package homework8
 
 import kotlin.random.Random
 
