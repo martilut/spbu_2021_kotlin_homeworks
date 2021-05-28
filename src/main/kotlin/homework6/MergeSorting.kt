@@ -1,6 +1,8 @@
 package homework6
 
-class MergeSorting {
+import kotlin.math.abs
+
+object MergeSorting {
 
     private fun IntArray.binarySearch(value: Int, left: Int, right: Int): Int {
         var leftBorder = left
@@ -26,12 +28,12 @@ class MergeSorting {
             ArrayBorders(0, array.lastIndex),
             tempArray, 0, threadCount
         )
-        for (i in array.indices) {
-            array[i] = tempArray[i]
-        }
+        tempArray.copyInto(array)
     }
 
-    data class ArrayBorders(val left: Int, val right: Int, val size: Int = right - left + 1)
+    data class ArrayBorders(val left: Int, val right: Int) {
+        val size: Int = right - left + 1
+    }
 
     private fun IntArray.mergeArraysMultithreading(
         firstPart: ArrayBorders,
@@ -94,14 +96,16 @@ class MergeSorting {
         finalLeftBorder: Int,
         threadCount: Int = 1
     ) {
-        when (currentPart.size) {
-            1 -> sortedArray[finalLeftBorder] = this[currentPart.left]
+        when {
+            currentPart.size < 1 -> {}
+            currentPart.size == 1 -> sortedArray[finalLeftBorder] = this[currentPart.left]
             else -> {
                 val tempArray = IntArray(currentPart.size) { 0 }
                 val middle = (currentPart.left + currentPart.right) / 2
                 val sortingMiddle = middle - currentPart.left
-                when (threadCount) {
-                    1 -> {
+                when {
+                    threadCount < 1 -> {}
+                    threadCount == 1 -> {
                         this.mergeSortMultithreading(
                             ArrayBorders(currentPart.left, middle), tempArray, 0
                         )

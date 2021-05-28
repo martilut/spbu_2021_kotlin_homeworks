@@ -3,7 +3,7 @@ package homework6
 import kotlin.random.Random
 import kotlin.system.measureNanoTime
 
-class SortingStatistics {
+object SortingStatistics {
 
     data class SortingData(val count: Int, val time: Double)
 
@@ -15,7 +15,7 @@ class SortingStatistics {
         val statistics = mutableListOf<SortingData>()
         for (i in 0..countValue step stepValue) {
             val elements = generateElements(i)
-            val time = measureNanoTime { MergeSorting().mergeSort(elements, threadValue) }
+            val time = measureNanoTime { MergeSorting.mergeSort(elements, threadValue) }
             statistics.add(
                 SortingData(i, time.toDouble())
             )

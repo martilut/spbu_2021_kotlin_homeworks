@@ -19,36 +19,6 @@ import tornadofx.label
 
 class Graph : View() {
 
-    companion object {
-        const val maxThreadValue = 1000
-        const val maxElementValue = 1000000
-        const val minValue = 1
-    }
-
-    data class InputData(val threadValue: Int, val countValue: Int, val stepValue: Int)
-
-    private fun checkUserInput(data: String, dataName: String, maxValue: Int): Int {
-        return when (val count = data.toIntOrNull()) {
-            null -> throw IllegalArgumentException("Incorrect input")
-            else -> {
-                when {
-                    count > maxValue || count < minValue ->
-                        throw IllegalArgumentException(
-                            "Minimal $dataName count is $minValue\nMaximal $dataName count is $maxValue"
-                        )
-                    else -> count
-                }
-            }
-        }
-    }
-
-    private fun getInputData(threadValue: String, countValue: String, stepValue: String): InputData {
-        val threadCount: Int = checkUserInput(threadValue, "thread", maxThreadValue)
-        val elementCount: Int = checkUserInput(countValue, "element", maxElementValue)
-        val stepCount: Int = checkUserInput(stepValue, "step", elementCount)
-        return InputData(threadCount, elementCount, stepCount)
-    }
-
     override val root = hbox {
         form {
             lateinit var changeAction: (InputData) -> Unit
@@ -83,12 +53,42 @@ class Graph : View() {
                     series("Threads: ${it.threadValue}\n" +
                             "Elements: ${it.countValue}\n" +
                             "Step: ${it.stepValue}") {
-                        SortingStatistics().getStatistics(it.threadValue, it.countValue, it.stepValue)
+                        SortingStatistics.getStatistics(it.threadValue, it.countValue, it.stepValue)
                             .forEach { item -> data(item.count, item.time) }
                     }
                 }
             }
         }
+    }
+
+    private fun checkUserInput(data: String, dataName: String, maxValue: Int): Int {
+        return when (val count = data.toIntOrNull()) {
+            null -> throw IllegalArgumentException("Incorrect input")
+            else -> {
+                when {
+                    count > maxValue || count < minValue ->
+                        throw IllegalArgumentException(
+                            "Minimal $dataName count is $minValue\nMaximal $dataName count is $maxValue"
+                        )
+                    else -> count
+                }
+            }
+        }
+    }
+
+    private fun getInputData(threadValue: String, countValue: String, stepValue: String): InputData {
+        val threadCount: Int = checkUserInput(threadValue, "thread", maxThreadValue)
+        val elementCount: Int = checkUserInput(countValue, "element", maxElementValue)
+        val stepCount: Int = checkUserInput(stepValue, "step", elementCount)
+        return InputData(threadCount, elementCount, stepCount)
+    }
+
+    data class InputData(val threadValue: Int, val countValue: Int, val stepValue: Int)
+
+    companion object {
+        const val maxThreadValue = 1000
+        const val maxElementValue = 1000000
+        const val minValue = 1
     }
 }
 
