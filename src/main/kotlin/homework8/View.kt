@@ -4,6 +4,7 @@ import javafx.beans.property.SimpleObjectProperty
 import javafx.geometry.Pos
 import javafx.scene.layout.GridPane
 import javafx.scene.paint.Color
+import javafx.scene.text.FontWeight
 import javafx.stage.StageStyle
 import tornadofx.*
 
@@ -14,10 +15,11 @@ class SingleCell : Fragment() {
     override val root = stackpane {
         label(" ")
         style {
-            prefWidth = 200.px
-            prefHeight = 200.px
+            prefWidth = 100.px
+            prefHeight = 100.px
             padding = box(5.px)
             borderColor += box(Color.GRAY)
+            fontSize = 50.px
         }
     }
 
@@ -72,7 +74,18 @@ class GameView : View() {
 
     override val root = borderpane {
         top {
+            vbox {
+                alignment = Pos.CENTER
+                label("GAME")
+                style {
+                    fontSize = 50.px
+                }
+            }
+        }
+        center = find<GameGrid>(mapOf(GameGrid::game to game)).root
+        bottom {
             hbox {
+                alignment = Pos.CENTER
                 button("PRESS").action {
                     game.getGameMatrix()
                 }
@@ -85,7 +98,6 @@ class GameView : View() {
                 }
             }
         }
-        center = find<GameGrid>(mapOf(GameGrid::game to game)).root
     }
 
     init {
