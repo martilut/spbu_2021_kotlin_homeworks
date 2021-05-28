@@ -1,5 +1,7 @@
 package finalTest
 
+@Suppress("NestedBlockDepth")
+
 fun <T> MutableList<T>.bubbleSort(comparator: Comparator<T>): List<T> {
     try {
         var swap = true
