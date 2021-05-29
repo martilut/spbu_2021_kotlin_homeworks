@@ -42,15 +42,17 @@ class Matrix(val matrix: Array<IntArray>) {
     fun isEqualTo(other: Matrix): Boolean {
         return when {
             this.rows != other.rows || this.columns != other.columns -> false
-            else -> {
-                var areEqual = true
-                for (i in 0 until this.rows) {
-                    for (j in 0 until this.columns) {
-                        if (this.matrix[i][j] != other.matrix[i][j]) areEqual = false
-                    }
-                }
-                areEqual
+            else -> isEqualToSameSize(other)
+        }
+    }
+
+    private fun isEqualToSameSize(other: Matrix): Boolean {
+        var areEqual = true
+        for (i in 0 until this.rows) {
+            for (j in 0 until this.columns) {
+                if (this.matrix[i][j] != other.matrix[i][j]) areEqual = false
             }
         }
+        return areEqual
     }
 }
