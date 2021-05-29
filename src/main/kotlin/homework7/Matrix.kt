@@ -3,7 +3,6 @@ package homework7
 
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import java.lang.IllegalArgumentException
 
 class Matrix(val matrix: Array<IntArray>) {
 
