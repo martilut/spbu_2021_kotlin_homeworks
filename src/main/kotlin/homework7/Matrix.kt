@@ -3,6 +3,7 @@ package homework7
 
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import java.lang.IllegalArgumentException
 
 class Matrix(val matrix: Array<IntArray>) {
 
@@ -40,19 +41,17 @@ class Matrix(val matrix: Array<IntArray>) {
     }
 
     fun isEqualTo(other: Matrix): Boolean {
-        var areEqual = true
-        when {
-            this.rows != other.rows || this.columns != other.columns -> areEqual = false
+        return when {
+            this.rows != other.rows || this.columns != other.columns -> false
             else -> {
+                var areEqual = true
                 for (i in 0 until this.rows) {
                     for (j in 0 until this.columns) {
-                        if (this.matrix[i][j] != other.matrix[i][j]) {
-                            areEqual = false
-                        }
+                        if (this.matrix[i][j] != other.matrix[i][j]) areEqual = false
                     }
                 }
+                areEqual
             }
         }
-        return areEqual
     }
 }
