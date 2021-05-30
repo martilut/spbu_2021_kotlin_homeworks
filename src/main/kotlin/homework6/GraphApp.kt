@@ -62,17 +62,15 @@ class Graph : View() {
     }
 
     private fun checkUserInput(data: String, dataName: String, maxValue: Int): Int {
-        return when (val count = data.toIntOrNull()) {
-            null -> throw IllegalArgumentException("Incorrect input")
-            else -> {
-                when {
-                    count > maxValue || count < minValue ->
-                        throw IllegalArgumentException(
-                            "Minimal $dataName count is $minValue\nMaximal $dataName count is $maxValue"
-                        )
-                    else -> count
-                }
+        val count = data.toIntOrNull()
+        return when {
+            count == null -> throw IllegalArgumentException("Incorrect input")
+            count > maxValue || count < minValue -> {
+                throw IllegalArgumentException(
+                    "Minimal $dataName count is $minValue\nMaximal $dataName count is $maxValue"
+                )
             }
+            else -> count
         }
     }
 
