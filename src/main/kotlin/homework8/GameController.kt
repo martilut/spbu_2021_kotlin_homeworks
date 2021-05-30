@@ -3,36 +3,55 @@ package homework8
 import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.property.SimpleStringProperty
 import tornadofx.Controller
+import homework8.playerTypes.Player
 
 class GameController : Controller() {
     val resultProperty = SimpleStringProperty(null)
 
     fun makeTurn(x: Int, y: Int, game: Game) {
-        if (game.currentPlayer.playerType == PlayerType.USER) {
-            game.setCellValue(x, y)
-            if (game.isEnd(x, y)) {
-                return
-            }
-        }
-        game.changePlayer()
-        if (game.currentPlayer.playerType != PlayerType.USER) {
-            val coordinates = game.currentPlayer.getCoordinates(game.getEmptyCells())
-            if (coordinates != null) {
-                game.setCellValue(coordinates.x, coordinates.y)
-                if (game.isEnd(coordinates.x, coordinates.y)) {
-                    return
+        if (game.getCell(x, y).value == null && resultProperty.value == null) {
+            if (!makeTurnUser(x, y, game)) {
+                if (game.currentPlayer.playerType != Player.Type.USER) {
+                    makeTurnBot(game)
                 }
             }
-            game.changePlayer()
         }
     }
+
+    private fun makeTurnUser(x: Int, y: Int, game: Game): Boolean {
+        game.setCellValue(x, y)
+        return when(game.isOver(x, y)) {
+            true -> true
+            else -> {
+                game.changePlayer()
+                false
+            }
+        }
+    }
+
+    fun makeTurnBot(game: Game) {
+        return when(val coordinates = game.currentPlayer.getCoordinates(game)) {
+            null -> {}
+            else -> {
+                game.setCellValue(coordinates.x, coordinates.y)
+                when (game.isOver(coordinates.x, coordinates.y)) {
+                    true -> {}
+                    else -> {
+                        game.changePlayer()
+                    }
+                }
+            }
+        }
+    }
+
+    fun isBotFirst(game: Game): Boolean = game.gameMode.opponentType == Player.Type.BOT
 
     fun clearField(game: Game) {
         game.clearLocalField()
         resultProperty.set(null)
     }
 
-    private fun Game.isEnd(x: Int, y: Int): Boolean {
+    private fun Game.isOver(x: Int, y: Int): Boolean {
         return when {
             this.isWin(x, y) && this.fieldFilled != 0 -> {
                 resultProperty.set("${this.currentPlayer.name} won!\n" + this.getStatistics())

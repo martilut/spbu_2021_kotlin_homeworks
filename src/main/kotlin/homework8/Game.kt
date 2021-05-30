@@ -1,5 +1,6 @@
 package homework8
 
+import homework8.playerTypes.Player
 import javafx.beans.property.SimpleObjectProperty
 
 class Game(val fieldSize: Int = 3, val gameMode: GameMode) {

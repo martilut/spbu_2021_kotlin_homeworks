@@ -1,10 +1,10 @@
 package homework8
 
+import homework8.playerTypes.UserPlayer
 import javafx.beans.property.SimpleObjectProperty
 import javafx.geometry.Pos
 import javafx.scene.layout.GridPane
 import javafx.scene.paint.Color
-import javafx.scene.text.FontWeight
 import javafx.stage.StageStyle
 import tornadofx.*
 
@@ -44,21 +44,30 @@ class GameGrid : View() {
 
     init {
         with(root) {
-            for (x in 0..2) {
+            for (x in 0 until game.fieldSize) {
                 row {
-                    for (y in 0..2) {
+                    for (y in 0 until game.fieldSize) {
                         val cell = find<SingleCell>(mapOf(SingleCell::markProperty to game.getCell(x, y)))
                         cell.apply {
                             this.root.onLeftClick {
-                                if (game.getCell(x, y).value == null && controller.resultProperty.value == null) {
-                                    controller.makeTurn(x, y, game)
-                                }
+                                controller.makeTurn(x, y, game)
                             }
                         }
                         this += cell
                     }
                 }
             }
+        }
+        controller.resultProperty.onChange {
+            if (controller.resultProperty.value == null && controller.isBotFirst(game)) {
+                controller.makeTurnBot(game)
+            }
+        }
+    }
+
+    override fun onDock() {
+        if (controller.isBotFirst(game)) {
+            controller.makeTurnBot(game)
         }
     }
 }

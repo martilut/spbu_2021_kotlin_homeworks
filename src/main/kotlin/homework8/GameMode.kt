@@ -1,5 +1,7 @@
 package homework8
 
+import homework8.playerTypes.*
+
 interface GameMode {
     companion object {
         fun getMark(userPlayer: UserPlayer): GameMark {
@@ -11,7 +13,7 @@ interface GameMode {
     }
     val userPlayer: UserPlayer
     val opponentPlayer: Player
-    val opponentType: PlayerType
+    val opponentType: Player.Type
         get() = opponentPlayer.playerType
 }
 
