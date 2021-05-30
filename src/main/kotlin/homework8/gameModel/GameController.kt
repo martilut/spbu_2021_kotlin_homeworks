@@ -1,4 +1,4 @@
-package homework8
+package homework8.gameModel
 
 import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.property.SimpleStringProperty
@@ -70,8 +70,8 @@ class GameController : Controller() {
     private fun Game.isWin(x: Int, y: Int): Boolean {
         val rowCheck = this.checkInRow(x)
         val columnCheck = this.checkInColumn(y)
-        val diagonalUpCheck = this.checkInDiagonalUp(x, y)
-        val diagonalDownCheck = this.checkInDiagonalDown(x, y)
+        val diagonalUpCheck = this.checkInDiagonalUp()
+        val diagonalDownCheck = this.checkInDiagonalDown()
         return when {
             x == y -> rowCheck || columnCheck || diagonalDownCheck
             x + y == this.fieldSize - 1 -> rowCheck || columnCheck || diagonalUpCheck
@@ -95,47 +95,21 @@ class GameController : Controller() {
         }
     }
 
-    private fun Game.checkInDiagonalDown(x: Int, y: Int): Boolean {
-        var xMinus = x
-        var yMinus = y
-        var xPlus = x
-        var yPlus = y
-
+    private fun Game.checkInDiagonalDown(): Boolean {
         val diagonalElements = mutableListOf<SimpleObjectProperty<GameMark>>()
-        while (xMinus >= 0 && yMinus >= 0) {
-            diagonalElements.add(this.field[xMinus][yMinus])
-            --xMinus
-            --yMinus
+        for (i in 0 until this.fieldSize) {
+            diagonalElements.add(this.field[i][i])
         }
-        while (xPlus < this.fieldSize && yPlus < this.field[0].size) {
-            diagonalElements.add(this.field[xPlus][yPlus])
-            ++xPlus
-            ++yPlus
-        }
-
         return diagonalElements.all {
             it.value == diagonalElements[0].value
         }
     }
 
-    private fun Game.checkInDiagonalUp(x: Int, y: Int): Boolean {
-        var xMinus = x
-        var yMinus = y
-        var xPlus = x
-        var yPlus = y
-
+    private fun Game.checkInDiagonalUp(): Boolean {
         val diagonalElements = mutableListOf<SimpleObjectProperty<GameMark>>()
-        while (xPlus < this.fieldSize && yMinus >= 0) {
-            diagonalElements.add(this.field[xPlus][yMinus])
-            ++xPlus
-            --yMinus
+        for (i in 0 until this.fieldSize) {
+            diagonalElements.add(this.field[this.fieldSize - 1 - i][i])
         }
-        while (xMinus >= 0 && yPlus < this.field[0].size) {
-            diagonalElements.add(this.field[xMinus][yPlus])
-            --xMinus
-            ++yPlus
-        }
-
         return diagonalElements.all {
             it.value == diagonalElements[0].value
         }

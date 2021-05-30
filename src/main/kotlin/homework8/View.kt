@@ -1,5 +1,7 @@
 package homework8
 
+import homework8.gameModel.*
+import homework8.playerTypes.*
 import homework8.playerTypes.UserPlayer
 import javafx.beans.property.SimpleObjectProperty
 import javafx.geometry.Pos
@@ -123,7 +125,7 @@ class MainMenu : View() {
     //private val controller: GameController by inject()
     //private val toggleGroup = ToggleGroup()
     //private val newGameMode = UserGameMode(UserPlayer("User1", Cross()), UserPlayer("User2", Nought()))
-    private val newGameMode2 = RandBotGameMode(UserPlayer("Felix", Cross()))
+    private val newGameMode2 = EasyBotGameMode(UserPlayer("Felix", Cross()))
     private val newGame = Game(gameMode = newGameMode2)
 
     override val root = borderpane {

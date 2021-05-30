@@ -1,7 +1,7 @@
 package homework8.playerTypes
 
-import homework8.Game
-import homework8.GameMark
+import homework8.gameModel.Game
+import homework8.gameModel.GameMark
 
 interface Player {
     enum class Type {

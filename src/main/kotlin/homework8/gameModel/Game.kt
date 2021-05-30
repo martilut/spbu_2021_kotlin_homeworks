@@ -1,7 +1,8 @@
-package homework8
+package homework8.gameModel
 
 import homework8.playerTypes.Player
 import javafx.beans.property.SimpleObjectProperty
+import kotlin.random.Random
 
 class Game(val fieldSize: Int = 3, val gameMode: GameMode) {
     var currentPlayer = getStartPlayer()
@@ -20,14 +21,7 @@ class Game(val fieldSize: Int = 3, val gameMode: GameMode) {
         }
     }
 
-    fun changePlayer() {
-        currentPlayer = when(currentPlayer.playerMark) {
-            gameMode.userPlayer.playerMark -> gameMode.opponentPlayer
-            else -> gameMode.userPlayer
-        }
-    }
-
-    fun getEmptyCells(): List<Coordinates> {
+    private fun getEmptyCells(): List<Coordinates> {
         val emptyCells = mutableListOf<Coordinates>()
         for (x in 0 until fieldSize) {
             for (y in 0 until fieldSize) {
@@ -37,6 +31,21 @@ class Game(val fieldSize: Int = 3, val gameMode: GameMode) {
             }
         }
         return emptyCells
+    }
+
+    fun changePlayer() {
+        currentPlayer = when(currentPlayer.playerMark) {
+            gameMode.userPlayer.playerMark -> gameMode.opponentPlayer
+            else -> gameMode.userPlayer
+        }
+    }
+
+    fun getRandomCoordinates(): Coordinates? {
+        val emptyCells = this.getEmptyCells()
+        return when(emptyCells.size) {
+            0 -> null
+            else -> emptyCells[Random.nextInt(0, emptyCells.size)]
+        }
     }
 
     fun setCellValue(x: Int, y: Int) {

@@ -1,4 +1,4 @@
-package homework8
+package homework8.gameModel
 
 interface GameMark {
     val name: String

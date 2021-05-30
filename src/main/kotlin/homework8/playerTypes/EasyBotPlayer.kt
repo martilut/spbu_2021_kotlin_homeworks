@@ -1,9 +1,9 @@
 package homework8.playerTypes
 
-import homework8.Cross
-import homework8.Game
-import homework8.GameMark
-import homework8.Nought
+import homework8.gameModel.Cross
+import homework8.gameModel.Game
+import homework8.gameModel.GameMark
+import homework8.gameModel.Nought
 import javafx.beans.property.SimpleObjectProperty
 
 class EasyBotPlayer(override var playerMark: GameMark) : Player {
@@ -11,45 +11,125 @@ class EasyBotPlayer(override var playerMark: GameMark) : Player {
     override val playerType = Player.Type.BOT
 
     override fun getCoordinates(game: Game): Game.Coordinates? {
-        TODO("Not yet implemented")
-    }
-
-    data class GameMarkCount(val gameMark: GameMark, val count: Int): Comparable<GameMarkCount> {
-        override fun compareTo(other: GameMarkCount): Int {
-            return when {
-                this.count > other.count -> 1
-                this.count == other.count -> 0
-                else -> -1
-            }
+        val rowCheck = checkInRows(game)
+        val columnCheck = checkInColumns(game)
+        val diagonalDownCheck = checkInDiagonalDown(game)
+        val diagonalUpCheck = checkInDiagonalUp(game)
+        return when {
+            rowCheck != null -> rowCheck
+            columnCheck != null -> columnCheck
+            diagonalDownCheck != null -> diagonalDownCheck
+            diagonalUpCheck != null -> diagonalUpCheck
+            else -> game.getRandomCoordinates()
         }
     }
 
-    /*fun checkInRows(game: Game) {
-        val row: List<SimpleObjectProperty<GameMark>>? = null
-        for (i in 0 until game.fieldSize) {
-            val currentGameMark = checkInLine(game.field[i])
-            when {
-                currentGameMark.count == game.fieldSize - 1 -> {
+    data class GameMarkCount(val gameMark: GameMark) {
+        var count = 0
+        var emptyCellIndex = 0
+    }
 
+    private fun checkInLine(line: List<SimpleObjectProperty<GameMark>>): GameMarkCount? {
+        var emptyCellIndex: Int? = null
+        val crosses = GameMarkCount(Cross())
+        val noughts = GameMarkCount(Nought())
+        for (i in line.indices) {
+            if (line[i].value != null) {
+                when(line[i].value.markValue) {
+                    crosses.gameMark.markValue -> ++crosses.count
+                    else -> ++noughts.count
                 }
-                else -> {}
+            } else {
+                emptyCellIndex = i
             }
         }
-    }*/
+        return when {
+            emptyCellIndex == null -> null
+            crosses.count == line.size - 1 -> {
+                crosses.emptyCellIndex = emptyCellIndex
+                crosses
+            }
+            noughts.count == line.size - 1 -> {
+                noughts.emptyCellIndex = emptyCellIndex
+                noughts
+            }
+            else -> null
+        }
+    }
 
-    fun checkInLine(line: List<SimpleObjectProperty<GameMark>>): GameMarkCount {
-        val crossCount = GameMarkCount(
-            Cross(),
-            line.count {
-                it.name == "cross"
+    private fun checkInRows(game: Game): Game.Coordinates? {
+        var answer: Game.Coordinates? = null
+        for (rowIndex in game.field.indices) {
+            val result = checkInLine(game.field[rowIndex])
+            when {
+                result == null -> {}
+                result.gameMark.markValue == playerMark.markValue -> {
+                    answer = Game.Coordinates(rowIndex, result.emptyCellIndex)
+                }
+                result.gameMark.markValue != playerMark.markValue && answer == null -> {
+                    answer = Game.Coordinates(rowIndex, result.emptyCellIndex)
+                }
             }
-        )
-        val noughtCount = GameMarkCount(
-            Nought(),
-            line.count {
-                it.name == "nought"
+        }
+        return answer
+    }
+
+    private fun checkInColumns(game: Game): Game.Coordinates? {
+        var answer: Game.Coordinates? = null
+        for (columnIndex in game.field.indices) {
+            val column = mutableListOf<SimpleObjectProperty<GameMark>>()
+            for (element in game.field) {
+                column.add(element[columnIndex])
             }
-        )
-        return maxOf(crossCount, noughtCount)
+            val result = checkInLine(column)
+            when {
+                result == null -> {}
+                result.gameMark.markValue == playerMark.markValue -> {
+                    answer = Game.Coordinates(result.emptyCellIndex, columnIndex)
+                }
+                result.gameMark.markValue != playerMark.markValue && answer == null -> {
+                    answer = Game.Coordinates(result.emptyCellIndex, columnIndex)
+                }
+            }
+        }
+        return answer
+    }
+
+    private fun checkInDiagonalDown(game: Game): Game.Coordinates? {
+        var answer: Game.Coordinates? = null
+        val diagonal = mutableListOf<SimpleObjectProperty<GameMark>>()
+        for (i in 0 until game.fieldSize) {
+            diagonal.add(game.field[i][i])
+        }
+        val result = checkInLine(diagonal)
+        when {
+            result == null -> {}
+            result.gameMark.markValue == playerMark.markValue -> {
+                answer = Game.Coordinates(result.emptyCellIndex, result.emptyCellIndex)
+            }
+            result.gameMark.markValue != playerMark.markValue && answer == null -> {
+                answer = Game.Coordinates(result.emptyCellIndex, result.emptyCellIndex)
+            }
+        }
+        return answer
+    }
+
+    private fun checkInDiagonalUp(game: Game): Game.Coordinates? {
+        var answer: Game.Coordinates? = null
+        val diagonal = mutableListOf<SimpleObjectProperty<GameMark>>()
+        for (i in 0 until game.fieldSize) {
+            diagonal.add(game.field[game.fieldSize - 1 - i][i])
+        }
+        val result = checkInLine(diagonal)
+        when {
+            result == null -> {}
+            result.gameMark.markValue == playerMark.markValue -> {
+                answer = Game.Coordinates(game.fieldSize - 1 - result.emptyCellIndex, result.emptyCellIndex)
+            }
+            result.gameMark.markValue != playerMark.markValue && answer == null -> {
+                answer = Game.Coordinates(game.fieldSize - 1 - result.emptyCellIndex, result.emptyCellIndex)
+            }
+        }
+        return answer
     }
 }
