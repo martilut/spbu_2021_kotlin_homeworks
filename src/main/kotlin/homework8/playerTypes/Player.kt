@@ -5,8 +5,9 @@ import homework8.gameModel.GameMark
 
 interface Player {
     enum class Type {
-        USER, BOT
+        USER, RANDBOT, SMARTBOT
     }
+    var score: Int
     val name: String
     val playerType: Type
     var playerMark: GameMark

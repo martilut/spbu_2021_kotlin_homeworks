@@ -1,8 +1,9 @@
-package homework8
+package homework8.gameView
 
-import homework8.gameModel.*
-import homework8.playerTypes.*
-import homework8.playerTypes.UserPlayer
+import homework8.gameModel.Game
+import homework8.gameModel.GameController
+import homework8.gameModel.GameMark
+import homework8.playerTypes.Player
 import javafx.beans.property.SimpleObjectProperty
 import javafx.geometry.Pos
 import javafx.scene.layout.GridPane
@@ -17,8 +18,8 @@ class SingleCell : Fragment() {
     override val root = stackpane {
         label(" ")
         style {
-            prefWidth = 100.px
-            prefHeight = 100.px
+            prefWidth = 150.px
+            prefHeight = 150.px
             padding = box(5.px)
             borderColor += box(Color.GRAY)
             fontSize = 50.px
@@ -61,22 +62,20 @@ class GameGrid : View() {
             }
         }
         controller.resultProperty.onChange {
-            if (controller.resultProperty.value == null && controller.isBotFirst(game)) {
+            if (controller.resultProperty.value == null && controller.isBotFirst()) {
                 controller.makeTurnBot(game)
             }
-        }
-    }
-
-    override fun onDock() {
-        if (controller.isBotFirst(game)) {
-            controller.makeTurnBot(game)
         }
     }
 }
 
 class ResultWindow : Fragment() {
     val result: String by param()
-    override val root = label(result)
+    override val root = hbox {
+        label(result).style {
+            fontSize = 10.px
+        }
+    }
 }
 
 class GameView : View() {
@@ -85,30 +84,20 @@ class GameView : View() {
 
     override val root = borderpane {
         top {
-            vbox {
-                alignment = Pos.CENTER
-                label("GAME")
-                style {
-                    fontSize = 50.px
-                }
-            }
-        }
-        center = find<GameGrid>(mapOf(GameGrid::game to game)).root
-        bottom {
             hbox {
                 alignment = Pos.CENTER
-                button("PRESS").action {
-                    game.getGameMatrix()
-                }
                 button("BACK TO MENU").action {
                     close()
                     find<MainMenu>().openWindow()
                 }
                 button("CLEAR FIELD").action {
-                    controller.clearField(game)
+                    if (controller.resultProperty.value != null) {
+                        controller.clearField(game)
+                    }
                 }
             }
         }
+        center = find<GameGrid>(mapOf(GameGrid::game to game)).root
     }
 
     init {
@@ -119,42 +108,76 @@ class GameView : View() {
             }
         }
     }
+
+    override fun onDock() {
+        if (controller.isBotFirst()) {
+            controller.makeTurnBot(game)
+        }
+    }
+}
+
+class ChooseGameMark : Fragment() {
+    private val mainMenu: MainMenu by inject()
+
+    override val root = hbox {
+        style {
+            fontSize = 50.px
+            alignment = Pos.CENTER
+        }
+        button("X").setOnAction {
+            close()
+            mainMenu.performWhenSelected(Player.Type.RANDBOT, true)
+        }
+        button("O").setOnAction {
+            close()
+            mainMenu.performWhenSelected(Player.Type.RANDBOT, false)
+        }
+    }
 }
 
 class MainMenu : View() {
-    //private val controller: GameController by inject()
-    //private val toggleGroup = ToggleGroup()
-    //private val newGameMode = UserGameMode(UserPlayer("User1", Cross()), UserPlayer("User2", Nought()))
-    private val newGameMode2 = EasyBotGameMode(UserPlayer("Felix", Cross()))
-    private val newGame = Game(gameMode = newGameMode2)
+    private val controller: GameController by inject()
+    private val game = Game()
 
     override val root = borderpane {
-        prefWidth = 500.0
-        prefHeight = 500.0
+        prefWidth = 400.0
+        prefHeight = 400.0
 
-        top {
-            label("TIC TAC TOE")
-        }
-        /*center {
-            hbox {
-                togglebutton("CROSS", toggleGroup).setOnAction {
-                    controller.currentPlayer = controller.crossPlayer
+        center {
+            listmenu {
+                item(text = "User vs User") {
+                    whenSelected {
+                        performWhenSelected(Player.Type.USER)
+                    }
                 }
-                togglebutton("NOUGHT", toggleGroup).setOnAction {
-                    controller.currentPlayer = controller.noughtPlayer
+                item(text = "User vs Easy Bot") {
+                    whenSelected {
+                        replaceWith<ChooseGameMark>()
+                    }
+                }
+                item(text = "User vs Hard Bot") {
+                    whenSelected {
+                        replaceWith<ChooseGameMark>()
+                    }
+                }
+                item(text = "Exit") {
+                    whenSelected {
+                        close()
+                    }
                 }
             }
-        }*/
+        }
     }
 
-    init {
-        with(root) {
-            bottom {
-                button("START").setOnAction {
-                    close()
-                    find<GameView>(mapOf(GameView::game to newGame)).openWindow()
-                }
-            }
+    fun performWhenSelected(playerType: Player.Type, isUserFirst: Boolean = true) {
+        controller.changeGameMode(playerType, isUserFirst)
+        close()
+        find<GameView>(mapOf(GameView::game to game)).openModal(stageStyle = StageStyle.UNIFIED)
+    }
+
+    override fun onUndock() {
+        if (controller.gameModeProperty.value != null) {
+            controller.clearField(game)
         }
     }
 }

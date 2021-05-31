@@ -4,22 +4,11 @@ import homework8.playerTypes.Player
 import javafx.beans.property.SimpleObjectProperty
 import kotlin.random.Random
 
-class Game(val fieldSize: Int = 3, val gameMode: GameMode) {
-    var currentPlayer = getStartPlayer()
-
+class Game(val fieldSize: Int = 3) {
     data class Coordinates(val x: Int, val y: Int)
-
-    var gameCount = 0
 
     val field = List(fieldSize) { List(fieldSize) { SimpleObjectProperty<GameMark>(null) } }
     var fieldFilled = 0
-
-    private fun getStartPlayer(): Player {
-        return when (gameMode.userPlayer.playerMark.name) {
-            "cross" -> gameMode.userPlayer
-            else -> gameMode.opponentPlayer
-        }
-    }
 
     private fun getEmptyCells(): List<Coordinates> {
         val emptyCells = mutableListOf<Coordinates>()
@@ -33,13 +22,6 @@ class Game(val fieldSize: Int = 3, val gameMode: GameMode) {
         return emptyCells
     }
 
-    fun changePlayer() {
-        currentPlayer = when(currentPlayer.playerMark) {
-            gameMode.userPlayer.playerMark -> gameMode.opponentPlayer
-            else -> gameMode.userPlayer
-        }
-    }
-
     fun getRandomCoordinates(): Coordinates? {
         val emptyCells = this.getEmptyCells()
         return when(emptyCells.size) {
@@ -48,8 +30,8 @@ class Game(val fieldSize: Int = 3, val gameMode: GameMode) {
         }
     }
 
-    fun setCellValue(x: Int, y: Int) {
-        field[x][y].set(currentPlayer.playerMark)
+    fun setCellValue(x: Int, y: Int, playerMark: GameMark) {
+        field[x][y].set(playerMark)
         fieldFilled += 1
     }
 
@@ -60,23 +42,13 @@ class Game(val fieldSize: Int = 3, val gameMode: GameMode) {
             }
         }
         fieldFilled = 0
-        currentPlayer = getStartPlayer()
     }
 
     fun getCell(x: Int, y: Int): SimpleObjectProperty<GameMark> = field[x][y]
 
-    fun getStatistics(): String = "Game number: $gameCount"
+    fun getStatistics(firstPlayer: Player, secondPlayer: Player): String {
+        return "${firstPlayer.name} : ${firstPlayer.score}\n" +
+                "${secondPlayer.name} : ${secondPlayer.score}"
 
-    fun getGameMatrix() {
-        for (x in 0..2) {
-            for (y in 0..2) {
-                if (this.field[x][y].value == null) {
-                    print("null ")
-                } else {
-                    print("${this.field[x][y].value.markValue} ")
-                }
-            }
-            print('\n')
-        }
     }
 }

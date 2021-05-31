@@ -6,9 +6,10 @@ import homework8.gameModel.GameMark
 import homework8.gameModel.Nought
 import javafx.beans.property.SimpleObjectProperty
 
-class EasyBotPlayer(override var playerMark: GameMark) : Player {
+class SmartBotPlayer(override var playerMark: GameMark) : Player {
+    override var score = 0
     override val name = "Easy"
-    override val playerType = Player.Type.BOT
+    override val playerType = Player.Type.SMARTBOT
 
     override fun getCoordinates(game: Game): Game.Coordinates? {
         val rowCheck = checkInRows(game)

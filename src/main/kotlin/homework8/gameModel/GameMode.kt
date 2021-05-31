@@ -3,13 +3,11 @@ package homework8.gameModel
 import homework8.playerTypes.Player
 import homework8.playerTypes.UserPlayer
 import homework8.playerTypes.RandomBotPlayer
-import homework8.playerTypes.EasyBotPlayer
+import homework8.playerTypes.SmartBotPlayer
 
 interface GameMode {
     val userPlayer: UserPlayer
     val opponentPlayer: Player
-    val opponentType: Player.Type
-        get() = opponentPlayer.playerType
 
     companion object {
         fun getOpponentMark(userPlayer: UserPlayer): GameMark {
@@ -21,14 +19,12 @@ interface GameMode {
     }
 }
 
-class UserGameMode(override val userPlayer: UserPlayer, private val _opponentPlayer: UserPlayer) : GameMode {
-    override val opponentPlayer = _opponentPlayer
-}
+class UserGameMode(override val userPlayer: UserPlayer, override val opponentPlayer: UserPlayer) : GameMode
 
 class RandBotGameMode(override val userPlayer: UserPlayer) : GameMode {
     override val opponentPlayer = RandomBotPlayer(GameMode.getOpponentMark(userPlayer))
 }
 
-class EasyBotGameMode(override val userPlayer: UserPlayer) : GameMode {
-    override val opponentPlayer = EasyBotPlayer(GameMode.getOpponentMark(userPlayer))
+class SmartBotGameMode(override val userPlayer: UserPlayer) : GameMode {
+    override val opponentPlayer = SmartBotPlayer(GameMode.getOpponentMark(userPlayer))
 }
