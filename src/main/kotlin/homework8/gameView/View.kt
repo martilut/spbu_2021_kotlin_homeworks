@@ -110,6 +110,7 @@ class GameView : View() {
     }
 
     override fun onDock() {
+        controller.clearField(game)
         if (controller.isBotFirst()) {
             controller.makeTurnBot(game)
         }
@@ -126,11 +127,11 @@ class ChooseGameMark : Fragment() {
         }
         button("X").setOnAction {
             close()
-            mainMenu.performWhenSelected(Player.Type.RANDBOT, true)
+            mainMenu.performWhenSelected(true)
         }
         button("O").setOnAction {
             close()
-            mainMenu.performWhenSelected(Player.Type.RANDBOT, false)
+            mainMenu.performWhenSelected(false)
         }
     }
 }
@@ -138,6 +139,7 @@ class ChooseGameMark : Fragment() {
 class MainMenu : View() {
     private val controller: GameController by inject()
     private val game = Game()
+    private var playerType: Player.Type = Player.Type.USER
 
     override val root = borderpane {
         prefWidth = 400.0
@@ -146,22 +148,24 @@ class MainMenu : View() {
         center {
             listmenu {
                 item(text = "User vs User") {
-                    whenSelected {
-                        performWhenSelected(Player.Type.USER)
+                    onLeftClick {
+                        performWhenSelected()
                     }
                 }
                 item(text = "User vs Easy Bot") {
-                    whenSelected {
+                    onLeftClick {
+                        playerType = Player.Type.RANDBOT
                         replaceWith<ChooseGameMark>()
                     }
                 }
                 item(text = "User vs Hard Bot") {
-                    whenSelected {
+                    onLeftClick {
+                        playerType = Player.Type.SMARTBOT
                         replaceWith<ChooseGameMark>()
                     }
                 }
                 item(text = "Exit") {
-                    whenSelected {
+                    onLeftClick {
                         close()
                     }
                 }
@@ -169,7 +173,7 @@ class MainMenu : View() {
         }
     }
 
-    fun performWhenSelected(playerType: Player.Type, isUserFirst: Boolean = true) {
+    fun performWhenSelected(isUserFirst: Boolean = true) {
         controller.changeGameMode(playerType, isUserFirst)
         close()
         find<GameView>(mapOf(GameView::game to game)).openModal(stageStyle = StageStyle.UNIFIED)
