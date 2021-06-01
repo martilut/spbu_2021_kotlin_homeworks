@@ -7,7 +7,7 @@ import homework8.playerTypes.Player
 import homework8.playerTypes.UserPlayer
 
 class GameController : Controller() {
-   val gameModeProperty = SimpleObjectProperty<GameMode>()
+    val gameModeProperty = SimpleObjectProperty<GameMode>()
     private var currentPlayer: Player = UserPlayer("Player 1", Cross())
 
     val resultProperty = SimpleStringProperty()
