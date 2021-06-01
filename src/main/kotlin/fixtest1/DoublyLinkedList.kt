@@ -1,6 +1,6 @@
-package test1_fix
+package fixtest1
 
-class DoublyLinkedList<T>() {
+class DoublyLinkedList<T> {
     data class DoublyLinkedNode<T>(val value: T) {
         var nextNode: DoublyLinkedNode<T>? = null
         var previousNode: DoublyLinkedNode<T>? = null

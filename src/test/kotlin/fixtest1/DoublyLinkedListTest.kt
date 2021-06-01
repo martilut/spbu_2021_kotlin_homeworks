@@ -1,4 +1,4 @@
-package test1_fix
+package fixtest1
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
