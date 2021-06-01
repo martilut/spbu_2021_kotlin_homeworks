@@ -102,17 +102,18 @@ class GameController : Controller() {
     }
 
     private fun Game.isOver(x: Int, y: Int): Boolean {
+        val gameMode = gameModeProperty.value
         return when {
             this.isWin(x, y) && this.fieldFilled != 0 -> {
                 ++currentPlayer.score
                 resultProperty.set(
-                    "${currentPlayer.name} won!\n" + this.getStatistics(gameModeProperty.value.userPlayer, gameModeProperty.value.opponentPlayer)
+                    "${currentPlayer.name} won!\n" + this.getStatistics(gameMode.userPlayer, gameMode.opponentPlayer)
                 )
                 true
             }
             this.fieldFilled == this.fieldSize * this.fieldSize -> {
                 resultProperty.set(
-                    "Draw!\n" + this.getStatistics(gameModeProperty.value.userPlayer, gameModeProperty.value.opponentPlayer)
+                    "Draw!\n" + this.getStatistics(gameMode.userPlayer, gameMode.opponentPlayer)
                 )
                 true
             }

@@ -1,3 +1,5 @@
+@file:Suppress("MagicNumber")
+
 package homework8.gameView
 
 import homework8.gameModel.Game
@@ -29,8 +31,6 @@ import tornadofx.row
 import tornadofx.stackpane
 import tornadofx.style
 import tornadofx.top
-
-@Suppress("MagicNumber")
 
 class SingleCell : Fragment() {
     val markProperty: SimpleObjectProperty<GameMark> by param()
