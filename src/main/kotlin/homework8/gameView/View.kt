@@ -9,8 +9,28 @@ import javafx.geometry.Pos
 import javafx.scene.layout.GridPane
 import javafx.scene.paint.Color
 import javafx.stage.StageStyle
-import tornadofx.*
+import tornadofx.Fragment
+import tornadofx.View
+import tornadofx.action
+import tornadofx.borderpane
+import tornadofx.box
+import tornadofx.button
+import tornadofx.center
+import tornadofx.clear
+import tornadofx.gridpane
+import tornadofx.hbox
+import tornadofx.label
+import tornadofx.listmenu
+import tornadofx.onChange
+import tornadofx.onLeftClick
+import tornadofx.plusAssign
+import tornadofx.px
+import tornadofx.row
+import tornadofx.stackpane
+import tornadofx.style
+import tornadofx.top
 
+@Suppress("MagicNumber")
 
 class SingleCell : Fragment() {
     val markProperty: SimpleObjectProperty<GameMark> by param()
@@ -149,6 +169,7 @@ class MainMenu : View() {
             listmenu {
                 item(text = "User vs User") {
                     onLeftClick {
+                        playerType = Player.Type.USER
                         performWhenSelected()
                     }
                 }

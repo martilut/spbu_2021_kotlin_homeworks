@@ -36,7 +36,7 @@ class SmartBotPlayer(override var playerMark: GameMark) : Player {
         val noughts = GameMarkCount(Nought())
         for (i in line.indices) {
             if (line[i].value != null) {
-                when(line[i].value.markValue) {
+                when (line[i].value.markValue) {
                     crosses.gameMark.markValue -> ++crosses.count
                     else -> ++noughts.count
                 }

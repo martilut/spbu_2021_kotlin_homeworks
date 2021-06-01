@@ -11,7 +11,7 @@ interface GameMode {
 
     companion object {
         fun getOpponentMark(userPlayer: UserPlayer): GameMark {
-            return when(userPlayer.playerMark.name) {
+            return when (userPlayer.playerMark.name) {
                 "cross" -> Nought()
                 else -> Cross()
             }

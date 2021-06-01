@@ -51,7 +51,7 @@ class GameController : Controller() {
 
     private fun makeTurnUser(x: Int, y: Int, game: Game): Boolean {
         game.setCellValue(x, y, currentPlayer.playerMark)
-        return when(game.isOver(x, y)) {
+        return when (game.isOver(x, y)) {
             true -> true
             else -> {
                 changePlayer()
@@ -84,13 +84,16 @@ class GameController : Controller() {
 
     private fun changePlayer() {
         val gameMode = gameModeProperty.value
-        currentPlayer = when(currentPlayer.playerMark) {
+        currentPlayer = when (currentPlayer.playerMark) {
             gameMode.userPlayer.playerMark -> gameMode.opponentPlayer
             else -> gameMode.userPlayer
         }
     }
 
-    fun isBotFirst(): Boolean = gameModeProperty.value.userPlayer.playerMark.name != "cross"
+    fun isBotFirst(): Boolean {
+        val gameMode = gameModeProperty.value
+        return gameMode.opponentPlayer.playerType != Player.Type.USER && gameMode.userPlayer.playerMark.name != "cross"
+    }
 
     fun clearField(game: Game) {
         currentPlayer = getStartPlayer()
@@ -102,14 +105,15 @@ class GameController : Controller() {
         return when {
             this.isWin(x, y) && this.fieldFilled != 0 -> {
                 ++currentPlayer.score
-                resultProperty.set("${currentPlayer.name} won!\n"
-                        + this.getStatistics(gameModeProperty.value.userPlayer, gameModeProperty.value.opponentPlayer)
+                resultProperty.set(
+                    "${currentPlayer.name} won!\n" + this.getStatistics(gameModeProperty.value.userPlayer, gameModeProperty.value.opponentPlayer)
                 )
                 true
             }
             this.fieldFilled == this.fieldSize * this.fieldSize -> {
-                resultProperty.set("Draw!\n"
-                        + this.getStatistics(gameModeProperty.value.userPlayer, gameModeProperty.value.opponentPlayer))
+                resultProperty.set(
+                    "Draw!\n" + this.getStatistics(gameModeProperty.value.userPlayer, gameModeProperty.value.opponentPlayer)
+                )
                 true
             }
             else -> false
@@ -125,42 +129,6 @@ class GameController : Controller() {
             x == y -> rowCheck || columnCheck || diagonalDownCheck
             x + y == this.fieldSize - 1 -> rowCheck || columnCheck || diagonalUpCheck
             else -> rowCheck || columnCheck
-        }
-    }
-
-    private fun Game.checkInRow(rowIndex: Int): Boolean {
-        return this.field[rowIndex].all {
-            it.value == this.field[rowIndex][0].value
-        }
-    }
-
-   private fun Game.checkInColumn(columnIndex: Int): Boolean {
-        val columnElements = mutableListOf<SimpleObjectProperty<GameMark>>()
-        for (element in this.field) {
-            columnElements.add(element[columnIndex])
-        }
-        return columnElements.all {
-            it.value == columnElements[0].value
-        }
-    }
-
-    private fun Game.checkInDiagonalDown(): Boolean {
-        val diagonalElements = mutableListOf<SimpleObjectProperty<GameMark>>()
-        for (i in 0 until this.fieldSize) {
-            diagonalElements.add(this.field[i][i])
-        }
-        return diagonalElements.all {
-            it.value == diagonalElements[0].value
-        }
-    }
-
-    private fun Game.checkInDiagonalUp(): Boolean {
-        val diagonalElements = mutableListOf<SimpleObjectProperty<GameMark>>()
-        for (i in 0 until this.fieldSize) {
-            diagonalElements.add(this.field[this.fieldSize - 1 - i][i])
-        }
-        return diagonalElements.all {
-            it.value == diagonalElements[0].value
         }
     }
 }
