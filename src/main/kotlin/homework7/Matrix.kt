@@ -12,7 +12,7 @@ class Matrix(val matrix: Array<IntArray>) {
     init {
         matrix.forEach {
             require(it.size == matrix[0].size) {
-                "Matrix has incorrect row"
+                "Incorrect matrix: all the row sizes should be equal"
             }
         }
     }
@@ -40,8 +40,8 @@ class Matrix(val matrix: Array<IntArray>) {
     }
 
     fun isEqualTo(other: Matrix): Boolean {
-        return when {
-            this.rows != other.rows || this.columns != other.columns -> false
+        return when (this.matrix.contentDeepEquals(other.matrix)) {
+            false -> false
             else -> isEqualToSameSize(other)
         }
     }
