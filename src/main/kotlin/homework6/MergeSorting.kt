@@ -41,7 +41,7 @@ object MergeSorting {
         threadCount: Int = 1
     ) {
         when {
-            firstPart.size < secondPart.size -> {
+            firstPart.size < secondPart.size || threadCount < 1 -> {
                 this.mergeArraysMultithreading(
                     secondPart,
                     firstPart,
