@@ -71,6 +71,7 @@ object MergeSorting {
                         leftThreadCount
                     )
                 }
+
                 val rightThread = Thread {
                     this.mergeArraysMultithreading(
                         ArrayBorders(firstMiddle + 1, firstPart.right),
@@ -80,6 +81,7 @@ object MergeSorting {
                         rightThreadCount
                     )
                 }
+
                 leftThread.start()
                 rightThread.start()
                 leftThread.join()
@@ -102,8 +104,7 @@ object MergeSorting {
                 val middle = (currentPart.left + currentPart.right) / 2
                 val sortingMiddle = middle - currentPart.left
                 when {
-                    threadCount < 1 -> {}
-                    threadCount == 1 -> {
+                    threadCount <= 1 -> {
                         this.mergeSortMultithreading(
                             ArrayBorders(currentPart.left, middle), tempArray, 0
                         )
