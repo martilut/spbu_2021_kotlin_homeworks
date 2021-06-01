@@ -4,10 +4,10 @@ package homework7
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-class Matrix(val matrix: Array<IntArray>) {
+class Matrix(private val matrix: Array<IntArray>) {
 
-    val rows: Int = matrix.size
-    val columns: Int = matrix[0].size
+    private val rows: Int = matrix.size
+    private val columns: Int = matrix[0].size
 
     init {
         matrix.forEach {
@@ -39,20 +39,5 @@ class Matrix(val matrix: Array<IntArray>) {
         return Matrix(result)
     }
 
-    fun isEqualTo(other: Matrix): Boolean {
-        return when (this.matrix.contentDeepEquals(other.matrix)) {
-            false -> false
-            else -> isEqualToSameSize(other)
-        }
-    }
-
-    private fun isEqualToSameSize(other: Matrix): Boolean {
-        var areEqual = true
-        for (i in 0 until this.rows) {
-            for (j in 0 until this.columns) {
-                if (this.matrix[i][j] != other.matrix[i][j]) areEqual = false
-            }
-        }
-        return areEqual
-    }
+    fun isEqualTo(other: Matrix): Boolean = this.matrix.contentDeepEquals(other.matrix)
 }
