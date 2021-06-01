@@ -8,7 +8,7 @@ import javafx.beans.property.SimpleObjectProperty
 
 class SmartBotPlayer(override var playerMark: GameMark) : Player {
     override var score = 0
-    override val name = "Easy"
+    override val name = "Hard Bot"
     override val playerType = Player.Type.SMARTBOT
 
     override fun getCoordinates(game: Game): Game.Coordinates? {
