@@ -24,6 +24,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.1.0")
     implementation("com.squareup:kotlinpoet:1.6.0")
     implementation("com.charleskorn.kaml:kaml:0.29.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3")
     implementation("no.tornado:tornadofx:1.7.20")
     implementation("org.openjfx:javafx-base:11.0.2")
     implementation("org.openjfx:javafx:11.0.2")
