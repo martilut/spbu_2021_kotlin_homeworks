@@ -4,10 +4,10 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 import java.net.URL
 
 plugins {
-    kotlin("jvm") version "1.4.31"
+    kotlin("jvm") version "1.4.32"
     id("org.jetbrains.dokka") version "1.4.20"
-    kotlin("plugin.serialization") version "1.4.31"
-    id("org.openjfx.javafxplugin") version "0.0.9"
+    kotlin("plugin.serialization") version "1.4.30"
+    id("org.openjfx.javafxplugin") version "0.0.8"
     id("io.gitlab.arturbosch.detekt") version "1.15.0"
     application
 }
@@ -38,8 +38,8 @@ dependencies {
 }
 
 javafx {
-    version = "11"
-    modules("javafx.controls")
+    version = "11.0.2"
+    modules = listOf("javafx.controls", "javafx.graphics")
 }
 
 detekt {
