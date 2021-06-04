@@ -8,7 +8,7 @@ package finaltestfix
 fun ByteArray.compress(): ByteArray {
     val listByteCount = mutableListOf<Pair<Byte, Int>>()
     for (byte in this) {
-        val newMap = Pair(byte, this.count {it == byte})
+        val newMap = Pair(byte, this.count { it == byte })
         if (!listByteCount.contains(newMap)) {
             listByteCount.add(newMap)
         }
